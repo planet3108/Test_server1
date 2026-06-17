@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NH 투자증권 나무 - 평균 매입단가 고객 분포 시뮬레이터</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+<script src="/_aistudio-iframe.js"></script></head>
+<body class="bg-slate-50 text-slate-900 min-h-screen py-8 px-4 sm:px-6">
+
+  <div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-3xs flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 bg-gradient-to-br from-[#EF4444] to-amber-600 rounded-xl text-white shadow-md">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-black text-slate-900 tracking-tight leading-none flex items-center gap-2">
+            NH투자증권 모바일 증권 나무
+            <span class="text-[9px] bg-red-100 text-rose-700 font-extrabold px-1.5 py-0.5 rounded-sm">standalone</span>
+          </h1>
+          <p class="text-[11px] text-slate-500 mt-1">
+            평균 매입단가 고객 분포 분석 모델 (인체 비유 스펙트럼 인포그래픽)
+          </p>
+        </div>
+      </div>
+      <div>
+        <span class="text-xs text-slate-400 font-mono font-bold bg-slate-100 px-3 py-1 rounded-full border border-slate-200">v1.2.0 Stable</span>
+      </div>
+    </div>
+
+    <!-- Main Live Simulator Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+      
+      <!-- Left Panel: Live Dynamic Simulation Controls (4 cols) -->
+      <div class="md:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-3xs space-y-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-1.5 border-b border-slate-100 pb-3 mb-4">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <h3 class="font-extrabold text-slate-800 text-sm">실시간 시뮬레이션 설정</h3>
+          </div>
+          
+          <p class="text-[11px] text-slate-400 leading-relaxed mb-6">
+            슬라이더를 이동하여 삼성전자 기준일 종가 및 투자자의 손실 비중을 변경하고, 그에 따른 분포 변화를 우측 화면에서 실시간으로 관찰할 수 있습니다.
+          </p>
+
+          <!-- Input 1: Stock Price Slider -->
+          <div class="space-y-2 mb-6">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-slate-700">기준일 종가 (삼성전자)</span>
+              <span id="price-val-label" class="font-mono font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">75,000원</span>
+            </div>
+            <input 
+              type="range" 
+              id="price-range" 
+              min="40000" 
+              max="125000" 
+              step="500" 
+              value="75000"
+              class="w-full h-1.5 bg-slate-150 rounded-lg appearance-none cursor-pointer accent-emerald-500 focus:outline-none"
+            >
+            <div class="flex justify-between text-[9px] text-slate-400 font-mono font-medium">
+              <span>40,000원</span>
+              <span>125,000원</span>
+            </div>
+          </div>
+
+          <!-- Input 2: Loss Investor Ratio Slider -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-slate-700">손실 투자자 비율 (전체 대비)</span>
+              <span id="loss-val-label" class="font-mono font-extrabold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">42.0%</span>
+            </div>
+            <input 
+              type="range" 
+              id="loss-range" 
+              min="1" 
+              max="99" 
+              step="0.5" 
+              value="42.0"
+              class="w-full h-1.5 bg-slate-150 rounded-lg appearance-none cursor-pointer accent-blue-500 focus:outline-none"
+            >
+            <div class="flex justify-between text-[9px] text-slate-400 font-mono font-medium">
+              <span>1% (수익대세)</span>
+              <span>99% (손실대세)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Reference Board -->
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-150 space-y-2.5 mt-4">
+          <div class="text-[10px] font-bold text-slate-500 block leading-none">활성 국면 지표</div>
+          
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 text-[11px]">수익 투자자 비율</span>
+            <span id="profit-ratio-label" class="font-mono font-extrabold text-rose-600">58.0%</span>
+          </div>
+          
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 text-[11px]">활성 인체 집중 부위</span>
+            <span id="active-body-part-label" class="font-bold text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">허리 (평균가 매입)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: The Extracted Beautiful Body Distribution UI (8 cols) -->
+      <div class="md:col-span-8 bg-white p-5 rounded-2xl border border-slate-250 shadow-sm space-y-5 flex flex-col justify-between">
+        
+        <!-- UI Header -->
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold text-slate-800 text-sm tracking-tight">평균 매입단가 고객 분포</span>
+            <div class="group relative">
+              <svg class="w-3.5 h-3.5 text-slate-350 cursor-pointer hover:text-slate-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div class="absolute bottom-6 left-0 w-56 p-2.5 bg-slate-900/95 text-white text-[9.5px] rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 leading-relaxed shadow-xl border border-slate-700">
+                나무고객들의 실제 매입단가를 인체 비유(머리·어깨·허리·무릎·발) 형식으로 분석하여 밀집도 스펙트럼으로 시각화한 화면입니다.
+              </div>
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono font-bold bg-slate-50 px-2 py-0.5 rounded border border-slate-100">실시간 데이터 시뮬레이션</span>
+        </div>
+
+        <!-- Main Visual Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-stretch">
+          
+          <!-- Human Body Graphic Canvas Column (9 cols) -->
+          <div class="sm:col-span-9 relative h-[278px] select-none border border-slate-100 rounded-xl bg-[#FCFDFE] pr-2 pl-2">
+
+            <!-- Body SVG centered exactly (left-[50%]) to prevent clashing with labels -->
+            <div class="absolute left-[50%] -translate-x-1/2 top-[8px] bottom-[8px] w-[115px] flex items-center justify-center z-10 transition-all duration-300">
+              <svg class="w-full h-full text-slate-200 fill-current" viewBox="0 0 100 200" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <clipPath id="body-clip">
+                    <path d="M50,14 C56.6,14 62,19.4 62,26 C62,32.6 56.6,38 50,38 C43.4,38 38,32.6 38,26 C38,19.4 43.4,14 50,14 Z M50,42 C41,42 37,47 28,52 C26,53 25,55 25,58 L28,112 C28.5,116 32,118 34,116 L35,111 L35,190 C35,194 39,194 40,190 L44,125 L47,125 L47,190 C47,194 51,194 52,190 L52,125 L55,125 L59,190 C59,194 63,194 64,190 L64,111 L65,116 C67,118 70.5,116 71,112 L74,58 C74,55 73,53 71,52 C62,47 58,42 50,42 Z" />
+                  </clipPath>
+                </defs>
+
+                <!-- Base background outline shadow -->
+                <path 
+                  d="M50,14 C56.6,14 62,19.4 62,26 C62,32.6 56.6,38 50,38 C43.4,38 38,32.6 38,26 C38,19.4 43.4,14 50,14 Z M50,42 C41,42 37,47 28,52 C26,53 25,55 25,58 L28,112 C28.5,116 32,118 34,116 L35,111 L35,190 C35,194 39,194 40,190 L44,125 L47,125 L47,190 C47,194 51,194 52,190 L52,125 L55,125 L59,190 C59,194 63,194 64,190 L64,111 L65,116 C67,118 70.5,116 71,112 L74,58 C74,55 73,53 71,52 C62,47 58,42 50,42 Z" 
+                  fill="#F1F5F9" 
+                  stroke="#E2E8F0" 
+                  stroke-width="1.5"
+                />
+
+                <!-- Dynamic colored segment rendering -->
+                <g clip-path="url(#body-clip)">
+                  <!-- 1. 머리 (y: 0 to 39) -->
+                  <rect id="svg-seg-head" x="0" y="0" width="100" height="39" fill="#E2E8F0" class="transition-all duration-300" />
+                  <!-- 2. 어깨 (y: 39 to 70) -->
+                  <rect id="svg-seg-shoulder" x="0" y="39" width="100" height="31" fill="#E2E8F0" class="transition-all duration-300" />
+                  <!-- 3. 허리 (y: 70 to 134) -->
+                  <rect id="svg-seg-mid" x="0" y="70" width="100" height="64" fill="#E2E8F0" class="transition-all duration-300" />
+                  <!-- 4. 무릎 (y: 134 to 176) -->
+                  <rect id="svg-seg-knee" x="0" y="134" width="100" height="42" fill="#E2E8F0" class="transition-all duration-300" />
+                  <!-- 5. 발 (y: 176 to 200) -->
+                  <rect id="svg-seg-bottom" x="0" y="176" width="100" height="24" fill="#E2E8F0" class="transition-all duration-300" />
+                </g>
+
+                <!-- Namuh clean brand signature on chest region -->
+                <g transform="translate(43, 49) scale(0.28)" class="fill-emerald-950 opacity-50">
+                  <path d="M 23 0 C 10.3 0 0 10.3 0 23 L 0 50 L 15 50 L 15 23 C 15 18.6 18.6 15 23 15 C 27.4 15 31 18.6 31 23 L 31 50 L 46 50 L 46 23 C 46 10.3 35.7 0 23 0 Z" fill="#047857" />
+                </g>
+                <text x="50" y="73" text-anchor="middle" class="text-[7.5px] font-black fill-emerald-950/40 tracking-wider">namuh</text>
+              </svg>
+            </div>
+
+            <!-- Dynamic Annotation Layer (JS fills values and sets highlight statuses) -->
+            <!-- 1. 머리 -->
+            <div id="row-head" class="absolute inset-x-0 h-8 flex items-center justify-between text-[10px] translate-y-[-50%] transition-all duration-300" style="top: 13%;">
+              <!-- Left Side Label -->
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-sans pr-1">
+                <div class="flex flex-col items-start select-none">
+                  <span class="lbl-name font-black text-[10.5px] leading-none flex items-center gap-1.5 text-slate-800">
+                    <span>머리 부분</span>
+                    <span class="ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500">12.5%</span>
+                  </span>
+                  <span class="active-pulse-lbl text-[6.5px] text-red-600 font-extrabold tracking-tighter leading-none mt-0.5 select-none hidden animate-pulse">기준일 종가</span>
+                </div>
+                <div class="border-line grow border-b ml-2 border-slate-100" />
+              </div>
+              <div class="w-[120px] shrink-0" />
+              <!-- Right Side Value -->
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-mono pl-1">
+                <div class="border-line grow border-b mr-2 border-slate-100" />
+                <span class="val-price text-[8px] font-extrabold font-mono text-slate-450 tracking-tighter">98,000원</span>
+              </div>
+            </div>
+
+            <!-- 2. 어깨 -->
+            <div id="row-shoulder" class="absolute inset-x-0 h-8 flex items-center justify-between text-[10px] translate-y-[-50%] transition-all duration-300" style="top: 25%;">
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-sans pr-1">
+                <div class="flex flex-col items-start select-none">
+                  <span class="lbl-name font-black text-[10.5px] leading-none flex items-center gap-1.5 text-slate-800">
+                    <span>어깨 부분</span>
+                    <span class="ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500">22.0%</span>
+                  </span>
+                  <span class="active-pulse-lbl text-[6.5px] text-red-600 font-extrabold tracking-tighter leading-none mt-0.5 select-none hidden animate-pulse">기준일 종가</span>
+                </div>
+                <div class="border-line grow border-b ml-2 border-slate-100" />
+              </div>
+              <div class="w-[120px] shrink-0" />
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-mono pl-1">
+                <div class="border-line grow border-b mr-2 border-slate-100" />
+                <span class="val-price text-[8px] font-extrabold font-mono text-slate-450 tracking-tighter">85,000원</span>
+              </div>
+            </div>
+
+            <!-- 3. 허리 -->
+            <div id="row-mid" class="absolute inset-x-0 h-8 flex items-center justify-between text-[10px] translate-y-[-50%] transition-all duration-300" style="top: 55%;">
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-sans pr-1">
+                <div class="flex flex-col items-start select-none">
+                  <span class="lbl-name font-black text-[10.5px] leading-none flex items-center gap-1.5 text-slate-800">
+                    <span>허리 부분</span>
+                    <span class="ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500">35.0%</span>
+                  </span>
+                  <span class="active-pulse-lbl text-[6.5px] text-red-600 font-extrabold tracking-tighter leading-none mt-0.5 select-none hidden animate-pulse">기준일 종가</span>
+                </div>
+                <div class="border-line grow border-b ml-2 border-slate-100" />
+              </div>
+              <div class="w-[120px] shrink-0" />
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-mono pl-1">
+                <div class="border-line grow border-b mr-2 border-slate-100" />
+                <span class="val-price text-[8px] font-extrabold font-mono text-slate-450 tracking-tighter">75,000원</span>
+              </div>
+            </div>
+
+            <!-- 4. 무릎 -->
+            <div id="row-knee" class="absolute inset-x-0 h-8 flex items-center justify-between text-[10px] translate-y-[-50%] transition-all duration-300" style="top: 75%;">
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-sans pr-1">
+                <div class="flex flex-col items-start select-none">
+                  <span class="lbl-name font-black text-[10.5px] leading-none flex items-center gap-1.5 text-slate-800">
+                    <span>무릎 부분</span>
+                    <span class="ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500">20.5%</span>
+                  </span>
+                  <span class="active-pulse-lbl text-[6.5px] text-red-600 font-extrabold tracking-tighter leading-none mt-0.5 select-none hidden animate-pulse">기준일 종가</span>
+                </div>
+                <div class="border-line grow border-b ml-2 border-slate-100" />
+              </div>
+              <div class="w-[120px] shrink-0" />
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-mono pl-1">
+                <div class="border-line grow border-b mr-2 border-slate-100" />
+                <span class="val-price text-[8px] font-extrabold font-mono text-slate-450 tracking-tighter">60,000원</span>
+              </div>
+            </div>
+
+            <!-- 5. 발 -->
+            <div id="row-bottom" class="absolute inset-x-0 h-8 flex items-center justify-between text-[10px] translate-y-[-50%] transition-all duration-300" style="top: 93%;">
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-sans pr-1">
+                <div class="flex flex-col items-start select-none">
+                  <span class="lbl-name font-black text-[10.5px] leading-none flex items-center gap-1.5 text-slate-800">
+                    <span>발끝 부분</span>
+                    <span class="ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500">10.0%</span>
+                  </span>
+                  <span class="active-pulse-lbl text-[6.5px] text-red-600 font-extrabold tracking-tighter leading-none mt-0.5 select-none hidden animate-pulse">기준일 종가</span>
+                </div>
+                <div class="border-line grow border-b ml-2 border-slate-100" />
+              </div>
+              <div class="w-[120px] shrink-0" />
+              <div class="w-[calc(50%-60px)] flex items-center justify-between font-mono pl-1">
+                <div class="border-line grow border-b mr-2 border-slate-100" />
+                <span class="val-price text-[8px] font-extrabold font-mono text-slate-450 tracking-tighter">48,000원</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Mini Side Statistics Summary Block (3 cols) -->
+          <div class="sm:col-span-3 flex flex-col justify-between gap-2 select-none">
+            <!-- Item 1 -->
+            <div class="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100 flex flex-col justify-center">
+              <span class="text-[9px] text-blue-550 font-bold leading-none">활성 국면 판정</span>
+              <span id="stat-state-badge" class="text-[11px] font-extrabold text-blue-700 mt-2 leading-none">허리 구간 침공</span>
+              <span class="text-[8px] text-blue-400 mt-1">손실비중 26%~42% 대입</span>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100 flex flex-col justify-center">
+              <span class="text-[9px] text-[#A16207] font-bold leading-none">밀집도 최고선</span>
+              <span id="stat-heavy-part" class="text-[11px] font-extrabold text-[#78350F] mt-2 leading-none">어깨선 집중 (35.0%)</span>
+              <span class="text-[8px] text-[#B45309] mt-1">개인 최다 매수 유입대</span>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-[#FFF5F5] p-2.5 rounded-xl border border-[#FFE3E3] flex flex-col justify-center">
+              <span class="text-[9px] text-rose-500 font-bold leading-none">상단 고점 저항선</span>
+              <span id="stat-resistance-price" class="text-[11px] font-extrabold text-rose-600 mt-2 leading-none font-mono">112,500원</span>
+              <span class="text-[8px] text-rose-400 mt-1">머리 부분 단가 (손실 최상단)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Lower Customer Distribution Spectrum Bar -->
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-150 space-y-2">
+          <div class="flex justify-between items-center text-[10px] font-bold text-slate-600">
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              구간별 고객 점유 비중 스펙트럼
+            </span>
+            <span class="text-[8px] text-slate-400">총합 100% 매칭</span>
+          </div>
+
+          <!-- Stacked Spectrum Progress Bar -->
+          <div id="spectrum-container" class="w-full h-3 rounded-full overflow-hidden flex bg-slate-100/80 shadow-3xs">
+            <!-- JS inserts dynamic blocks here -->
+          </div>
+
+          <!-- Legendary Grid with Matching Marks -->
+          <div id="legend-grid" class="grid grid-cols-5 gap-1 pt-1 text-center text-[9px] font-bold text-slate-500">
+            <!-- JS inserts 5 column segments dynamically with matching grades -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Instructions / Standalone benefits card -->
+    <div class="bg-slate-900 text-slate-200 border border-slate-800 p-5 rounded-2xl flex items-center justify-between gap-4 shadow-xl">
+      <div class="space-y-1">
+        <h4 class="text-xs font-black text-white tracking-wide">💡 오프라인 파일 정보 및 사용 가이드</h4>
+        <p class="text-[11px] text-slate-400 leading-relaxed max-w-2xl">
+          이 HTML은 외부 서버 통신 필요 없이 <strong>모든 계산 로직과 SVG 렌더링 엔진, 테일윈드 스타일</strong>이 완벽하게 결합된 단독 인포그래픽 모듈입니다. 주가와 손실투자자 비중 움직임에 따라 유기적으로 연결선, 밀집 스펙트럼 바, 인어 뱃지가 다이나믹 하이라이트 처리됩니다.
+        </p>
+      </div>
+      <button 
+        onclick="window.print()" 
+        class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-extrabold px-3 py-2 rounded-lg border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+        </svg>
+        보고서 인쇄
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Dynamic Controller Script -->
+  <script>
+    // Elements
+    const priceSlider = document.getElementById('price-range');
+    const lossSlider = document.getElementById('loss-range');
+    
+    const priceValLabel = document.getElementById('price-val-label');
+    const lossValLabel = document.getElementById('loss-val-label');
+    
+    const profitRatioLabel = document.getElementById('profit-ratio-label');
+    const activeBodyPartLabel = document.getElementById('active-body-part-label');
+    
+    const statStateBadge = document.getElementById('stat-state-badge');
+    const statHeavyPart = document.getElementById('stat-heavy-part');
+    const statResistancePrice = document.getElementById('stat-resistance-price');
+    
+    const spectrumContainer = document.getElementById('spectrum-container');
+    const legendGrid = document.getElementById('legend-grid');
+
+    // Human Body Svg Region rects
+    const pathHead = document.getElementById('svg-seg-head');
+    const pathShoulder = document.getElementById('svg-seg-shoulder');
+    const pathMid = document.getElementById('svg-seg-mid');
+    const pathKnee = document.getElementById('svg-seg-knee');
+    const pathBottom = document.getElementById('svg-seg-bottom');
+
+    const svgSegs = {
+      head: pathHead,
+      shoulder: pathShoulder,
+      mid: pathMid,
+      knee: pathKnee,
+      bottom: pathBottom
+    };
+
+    // Annotation row elements
+    const rows = {
+      head: document.getElementById('row-head'),
+      shoulder: document.getElementById('row-shoulder'),
+      mid: document.getElementById('row-mid'),
+      knee: document.getElementById('row-knee'),
+      bottom: document.getElementById('row-bottom')
+    };
+
+    function updateSim() {
+      const stockPrice = parseInt(priceSlider.value);
+      const lossVal = parseFloat(lossSlider.value);
+      
+      // Update basic labels
+      priceValLabel.innerText = stockPrice.toLocaleString() + '원';
+      lossValLabel.innerText = lossVal.toFixed(1) + '%';
+      
+      const profitVal = (100 - lossVal).toFixed(1);
+      profitRatioLabel.innerText = profitVal + '%';
+
+      // 1. Determine active segment key dynamically
+      let activeSegKey = 'mid';
+      let partKr = '허리';
+      let partDesc = '평균가 매입';
+      let activeKr = '허리 부분';
+      
+      if (lossVal <= 16) {
+        activeSegKey = 'head';
+        partKr = '머리';
+        partDesc = '최상단 고가 매입';
+        activeKr = '머리 부분';
+      } else if (lossVal <= 26) {
+        activeSegKey = 'shoulder';
+        partKr = '어깨';
+        partDesc = '고가 매입선';
+        activeKr = '어깨 부분';
+      } else if (lossVal <= 42) {
+        activeSegKey = 'mid';
+        partKr = '허리';
+        partDesc = '중간 가격대 매입';
+        activeKr = '허리 부분';
+      } else if (lossVal <= 58) {
+        activeSegKey = 'knee';
+        partKr = '무릎';
+        partDesc = '저가 매입선';
+        activeKr = '무릎 부분';
+      } else {
+        activeSegKey = 'bottom';
+        partKr = '발끝';
+        partDesc = '최저가 매수한 최고수';
+        activeKr = '발끝 부분';
+      }
+
+      activeBodyPartLabel.innerText = `${partKr} (${partDesc})`;
+      statStateBadge.innerText = `${partKr} 부근 집중 매집군`;
+
+      // 2. Compute Segment standard prices
+      let topPrice = 0, shoulderPrice = 0, midPrice = 0, kneePrice = 0, bottomPrice = 0;
+
+      if (activeSegKey === 'head') {
+        topPrice = stockPrice;
+        shoulderPrice = Math.round((stockPrice * 0.90) / 10) * 10;
+        midPrice = Math.round((stockPrice * 0.75) / 10) * 10;
+        kneePrice = Math.round((stockPrice * 0.60) / 10) * 10;
+        bottomPrice = Math.round((stockPrice * 0.45) / 10) * 10;
+      } else if (activeSegKey === 'shoulder') {
+        topPrice = Math.round((stockPrice * 1.12) / 10) * 10;
+        shoulderPrice = stockPrice;
+        midPrice = Math.round((stockPrice * 0.85) / 10) * 10;
+        kneePrice = Math.round((stockPrice * 0.70) / 10) * 10;
+        bottomPrice = Math.round((stockPrice * 0.55) / 10) * 10;
+      } else if (activeSegKey === 'mid') {
+        topPrice = Math.round((stockPrice * 1.30) / 10) * 10;
+        shoulderPrice = Math.round((stockPrice * 1.15) / 10) * 10;
+        midPrice = stockPrice;
+        kneePrice = Math.round((stockPrice * 0.82) / 10) * 10;
+        bottomPrice = Math.round((stockPrice * 0.65) / 10) * 10;
+      } else if (activeSegKey === 'knee') {
+        topPrice = Math.round((stockPrice * 1.50) / 10) * 10;
+        shoulderPrice = Math.round((stockPrice * 1.35) / 10) * 10;
+        midPrice = Math.round((stockPrice * 1.18) / 10) * 10;
+        kneePrice = stockPrice;
+        bottomPrice = Math.round((stockPrice * 0.80) / 10) * 10;
+      } else {
+        topPrice = Math.round((stockPrice * 1.70) / 10) * 10;
+        shoulderPrice = Math.round((stockPrice * 1.55) / 10) * 10;
+        midPrice = Math.round((stockPrice * 1.40) / 10) * 10;
+        kneePrice = Math.round((stockPrice * 1.12) / 10) * 10;
+        bottomPrice = stockPrice;
+      }
+
+      statResistancePrice.innerText = topPrice.toLocaleString() + '원';
+
+      // 3. Compute organic concentration percentages (Summing up to exact 100%)
+      const headRatio = parseFloat((3.0 + (lossVal * 0.15)).toFixed(1));
+      const bottomRatio = parseFloat((2.0 + (100 - lossVal) * 0.04).toFixed(1));
+      const kneeRatio = parseFloat((7.0 + (100 - lossVal) * 0.12).toFixed(1));
+      const midRatio = parseFloat((12.0 + (100 - lossVal) * 0.16).toFixed(1));
+      const shoulderRatio = parseFloat((100 - (headRatio + midRatio + kneeRatio + bottomRatio)).toFixed(1));
+
+      const segData = [
+        { id: 'bottom', name: '발끝 부분', label: '발끝', ratio: bottomRatio, price: bottomPrice },
+        { id: 'knee', name: '무릎 부분', label: '무릎', ratio: kneeRatio, price: kneePrice },
+        { id: 'mid', name: '허리 부분', label: '허리', ratio: midRatio, price: midPrice },
+        { id: 'shoulder', name: '어깨 부분', label: '어깨', ratio: shoulderRatio, price: shoulderPrice },
+        { id: 'head', name: '머리 부분', label: '머리', ratio: headRatio, price: topPrice }
+      ];
+
+      // Find highest ratio
+      const ratios = segData.map(s => s.ratio);
+      const maxRatio = Math.max(...ratios);
+      const highestSeg = segData.find(s => s.ratio === maxRatio);
+      statHeavyPart.innerText = `${highestSeg.label}선 집중 (${highestSeg.ratio}%)`;
+
+      // 4. Update SVG fill colors
+      Object.keys(svgSegs).forEach(key => {
+        const segEl = svgSegs[key];
+        if (key === activeSegKey) {
+          segEl.setAttribute('fill', '#EF4444'); // Vivid Red Highlight for Active stock location
+        } else {
+          segEl.setAttribute('fill', '#F1F5F9'); // Simple neutral slate-50 background inside head/limbs
+        }
+      });
+
+      // 5. Update connection lines, highlights, and values
+      segData.forEach(seg => {
+        const rowEl = rows[seg.id];
+        const isActive = seg.id === activeSegKey;
+        
+        // Find children
+        const lblName = rowEl.querySelector('.lbl-name');
+        const rBadge = rowEl.querySelector('.ratio-badge');
+        const actPulse = rowEl.querySelector('.active-pulse-lbl');
+        const checkLines = rowEl.querySelectorAll('.border-line');
+        const vPrice = rowEl.querySelector('.val-price');
+
+        // Reset and Apply Styles
+        if (isActive) {
+          lblName.className = "lbl-name font-black text-[11px] leading-none flex items-center gap-1.5 text-red-600 transition-all duration-300";
+          rBadge.innerText = `${seg.ratio}%`;
+          rBadge.className = "ratio-badge text-[8px] font-extrabold font-mono px-1 py-0.5 rounded bg-red-100 text-red-700 transition-all duration-300";
+          actPulse.classList.remove('hidden');
+          
+          checkLines.forEach(line => {
+            line.className = "border-line grow border-b ml-2 mr-2 border-red-300 border-dashed transition-all duration-300";
+          });
+
+          vPrice.innerText = stockPrice.toLocaleString() + '원';
+          vPrice.className = "val-price text-[11.5px] font-black font-mono text-red-650 transition-all duration-300";
+        } else {
+          lblName.className = "lbl-name font-black text-[10px] leading-none flex items-center gap-1.5 text-slate-850 transition-all duration-300";
+          rBadge.innerText = `${seg.ratio}%`;
+          rBadge.className = "ratio-badge text-[8px] font-bold font-mono px-1 py-0.5 rounded bg-slate-100 text-slate-500 transition-all duration-300";
+          actPulse.classList.add('hidden');
+
+          checkLines.forEach(line => {
+            line.className = "border-line grow border-b ml-2 mr-2 border-slate-100 transition-all duration-300";
+          });
+
+          vPrice.innerText = seg.price.toLocaleString() + '원';
+          vPrice.className = "val-price text-[9px] font-bold font-mono text-slate-450 transition-all duration-300";
+        }
+      });
+
+      // 6. Draw dynamic Horizontal spectrum bar
+      spectrumContainer.innerHTML = '';
+      segData.forEach(seg => {
+        const opacity = maxRatio > 0 ? 0.15 + 0.85 * (seg.ratio / maxRatio) : 0.15;
+        const color = `rgba(16, 185, 129, ${opacity})`;
+        
+        const block = document.createElement('div');
+        block.className = 'h-full transition-all duration-300 hover:opacity-90';
+        block.style.width = `${seg.ratio}%`;
+        block.style.backgroundColor = color;
+        block.title = `${seg.label} 부분: ${seg.ratio}%`;
+        spectrumContainer.appendChild(block);
+      });
+
+      // 7. Update Legendary Grid Below the Spectrum
+      legendGrid.innerHTML = '';
+      segData.forEach(seg => {
+        const opacity = maxRatio > 0 ? 0.12 + 0.88 * (seg.ratio / maxRatio) : 0.12;
+        const isHighest = seg.ratio === maxRatio;
+        
+        let txtClass = 'text-slate-400 font-medium';
+        if (isHighest) {
+          txtClass = 'text-emerald-800 font-black';
+        } else if (seg.ratio >= 25) {
+          txtClass = 'text-emerald-700 font-extrabold';
+        } else if (seg.ratio >= 15) {
+          txtClass = 'text-emerald-600 font-bold';
+        } else {
+          txtClass = 'text-slate-450 font-semibold';
+        }
+
+        const legCol = document.createElement('div');
+        legCol.className = 'flex flex-col items-center justify-start py-1 min-h-[44px] border-r last:border-r-0 border-slate-200/40';
+        
+        legCol.innerHTML = `
+          <span class="text-[9.5px] ${txtClass}">${seg.label}선</span>
+          <span class="text-[10.5px] font-extrabold font-mono text-slate-750 mt-0.5">${seg.ratio}%</span>
+          ${isHighest ? `
+            <div class="mt-0.5">
+              <span class="text-[7.5px] bg-emerald-100 text-emerald-800 px-1 py-[1.5px] rounded font-black leading-none">원조</span>
+            </div>
+          ` : '<div class="h-4 mt-0.5 inline-block"></div>'}
+        `;
+        legendGrid.appendChild(legCol);
+      });
+    }
+
+    // Attach Event Listeners
+    priceSlider.addEventListener('input', updateSim);
+    lossSlider.addEventListener('input', updateSim);
+
+    // Initial load call
+    updateSim();
+  </script>
+</body>
+</html>
