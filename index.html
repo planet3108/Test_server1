@@ -75,102 +75,11 @@
       </div>
     </div>
 
-    <!-- Layout Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Layout Wrapper -->
+    <div class="flex justify-center items-start py-4">
       
-      <!-- Left Panel: Interactive Controller Sidebar (4 cols) -->
-      <div class="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-3xs space-y-6">
-        <div>
-          <div class="flex items-center gap-1.5 border-b border-slate-100 pb-3 mb-4">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-500" />
-            <h3 class="font-extrabold text-slate-800 text-sm">시계열 컨트롤 데스크</h3>
-          </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed mb-6">
-            하단의 재생/일시정지와 배속 스크롤바를 조작해 모바일 화면이 실시간으로 동기화되어 움직이는 모습을 감상할 수 있습니다.
-          </p>
-
-          <!-- Timeline Control Block -->
-          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">자동 재생 루프</span>
-              <span class="text-xs text-slate-500 font-mono flex items-center gap-1">
-                📅 시점: <span id="ctrl-active-date" class="font-black text-slate-800 bg-white border px-2 py-0.5 rounded">25.06.16</span>
-              </span>
-            </div>
-
-            <!-- Play & Options Row -->
-            <div class="flex items-center gap-2">
-              <button 
-                id="btn-play-pause"
-                class="bg-slate-950 hover:bg-slate-800 text-white rounded-xl p-2.5 text-xs font-black transition-all flex items-center justify-center grow gap-1.5 shadow-sm"
-              >
-                <span id="play-icon">▶ 재생</span>
-              </button>
-              
-              <button 
-                id="btn-reset" 
-                class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 rounded-xl p-2.5 text-xs font-bold transition-all"
-                title="시작점으로 초기화"
-              >
-                ↺
-              </button>
-
-              <select id="select-speed" class="bg-white border border-slate-200 rounded-xl px-2 py-2.5 text-[10px] font-bold text-slate-700 focus:outline-none">
-                <option value="1500">0.5 배속</option>
-                <option value="1000" selected>1.0 배속</option>
-                <option value="500">2.0 배속</option>
-                <option value="200">5.0 배속</option>
-              </select>
-            </div>
-
-            <!-- Scrubber Range Slider -->
-            <div class="space-y-1 pt-1">
-              <input 
-                type="range" 
-                id="timeline-scrubber" 
-                min="0" 
-                max="100" 
-                value="0" 
-                class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500 focus:outline-none"
-              >
-              <div class="flex justify-between text-[9px] text-slate-450 font-mono font-medium">
-                <span id="label-start-date">25.06.16</span>
-                <span id="label-end-date">26.06.15</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Metric Summary -->
-        <div class="border-t border-slate-100 pt-5 space-y-3">
-          <h4 class="text-xs font-extrabold text-slate-700">활성 지표 요약 정보</h4>
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-              <span class="text-slate-400 text-[11px]">선택 지표</span>
-              <span id="summary-active-metric" class="font-extrabold text-amber-600">평균 단가</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-              <span class="text-slate-400 text-[11px]">현재 누적치</span>
-              <span id="summary-active-value" class="font-mono font-bold text-slate-800">145,000원</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5">
-              <span class="text-slate-400 text-[11px]">손실 비중 지수</span>
-              <span id="summary-loss-ratio" class="font-mono font-bold text-red-600">42%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Print/Share -->
-        <button 
-          onclick="window.print()" 
-          class="w-full border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-black py-2.5 rounded-xl transition flex items-center justify-center gap-1.5"
-        >
-          🖨️ 시뮬레이션 리포트 인쇄
-        </button>
-      </div>
-
-      <!-- Right Panel: The Emulated Fidelity Mobile Device Screen (8 cols) -->
-      <div class="lg:col-span-8 flex justify-center">
+      <!-- Centered Mobile Device Screen -->
+      <div class="flex justify-center w-full">
         <!-- Sleek Device Wrapper Frame -->
         <div class="w-full max-w-[395px] bg-[#f8f9fb] rounded-[44px] border-[10px] border-slate-950 shadow-2xl overflow-hidden relative font-sans text-slate-900 flex flex-col justify-between" style="min-height: 840px;">
           
@@ -337,7 +246,7 @@
       <h4 class="font-black text-white text-sm mb-1">💡 나무 모바일 복제 시뮬레이터 가이드</h4>
       <p class="text-slate-400">
         본 HTML 파일은 NH나무 스마트폰 앱 "NH데이터 - [NH 투자자들]" 위젯 영역의 고해상도 시뮬레이션 복각판입니다. 
-        인증이나 모바일 네트워크가 비연결된 PC 오프라인 로컬 환경에서도 슬라이더 및 자동 재생 장치를 사용해 1년 간의 총보유량, 평균수익률 및 주주 통계 데이터를 완전하게 가상 차트 연동 렌더링하도록 일체화 설계되었습니다.
+        인증이나 모바일 네트워크가 비연결된 오프라인 환경에서도 나무의 위젯 카드 선택과 기간 탭(1M·3M·6M·1Y) 조작에 맞춤으로 1년 간의 총 투자자, 평균수익률, 평균단가, 평균보유량 및 총보유수량의 가상 차트 추세선을 완전하게 연동 렌더링하도록 제작되었습니다.
       </p>
     </div>
 
@@ -683,23 +592,8 @@
     let selectedMetric = 'avgPurchasePrice';
     let selectedPeriod = '1Y';
     let activeIndex = dataset.length - 1;
-    let isPlaying = false;
-    let playInterval = null;
-    let playSpeed = 1000;
 
     // Elements
-    const ctrlActiveDate = document.getElementById('ctrl-active-date');
-    const playPauseBtn = document.getElementById('btn-play-pause');
-    const resetBtn = document.getElementById('btn-reset');
-    const playSpeedSelect = document.getElementById('select-speed');
-    const scrubberInput = document.getElementById('timeline-scrubber');
-    const lbStart = document.getElementById('label-start-date');
-    const lbEnd = document.getElementById('label-end-date');
-
-    const summaryMetric = document.getElementById('summary-active-metric');
-    const summaryValue = document.getElementById('summary-active-value');
-    const summaryLoss = document.getElementById('summary-loss-ratio');
-
     const mStockPrice = document.getElementById('m-stock-price');
     const mStockChange = document.getElementById('m-stock-change');
     const mStockPercent = document.getElementById('m-stock-percent');
@@ -707,14 +601,6 @@
     const chartTitle = document.getElementById('chart-title');
     const chartRange = document.getElementById('chart-date-range');
     const chartViewport = document.getElementById('chart-viewport');
-    const chartSvg = document.getElementById('chart-svg');
-
-    // Scrubber maximum setup
-    scrubberInput.max = dataset.length - 1;
-
-    // Setup initial dates
-    lbStart.innerText = dataset[0].date;
-    lbEnd.innerText = dataset[dataset.length - 1].date;
 
     // Helper: format data values
     function formatValue(value, key) {
@@ -749,14 +635,6 @@
     function updateUI() {
       const activeData = dataset[activeIndex];
       const metricDef = metrics.find(m => m.key === selectedMetric);
-
-      // Left panel controller labels
-      ctrlActiveDate.innerText = activeData.date;
-      scrubberInput.value = activeIndex;
-
-      summaryMetric.innerText = metricDef.label;
-      summaryValue.innerText = formatValue(activeData[selectedMetric], selectedMetric);
-      summaryLoss.innerText = activeData.lossInvestorRatio + '%';
 
       // Mobile simulated ticker banner
       mStockPrice.innerText = activeData.stockPrice.toLocaleString();
@@ -818,16 +696,13 @@
       });
 
       // Smooth scroll the current selected element to make sure it's always initially centered
-      // We skip it during automatic fast playback to prevent horizontal scrolling jitter
-      if (!isPlaying) {
-        const activeCard = deck.querySelector('.border-amber-500');
-        if (activeCard) {
-          activeCard.scrollIntoView({
-            behavior: 'auto', // immediate scroll on initial load
-            block: 'nearest',
-            inline: 'center'
-          });
-        }
+      const activeCard = deck.querySelector('.border-amber-500');
+      if (activeCard) {
+        activeCard.scrollIntoView({
+          behavior: 'auto', // immediate scroll on initial load
+          block: 'nearest',
+          inline: 'center'
+        });
       }
     }
 
@@ -909,56 +784,6 @@
         <circle cx="${points[points.length - 1].x}" cy="${points[points.length - 1].y}" r="8" fill="${pathColor}" fill-opacity="0.3" class="animate-ping" />
       `;
     }
-
-    // Interactive playback engine
-    function togglePlayback() {
-      if (isPlaying) {
-        clearInterval(playInterval);
-        isPlaying = false;
-        playPauseBtn.innerHTML = '<span>▶ 재생</span>';
-        playPauseBtn.className = 'bg-slate-950 hover:bg-slate-800 text-white rounded-xl p-2.5 text-xs font-black transition-all flex items-center justify-center grow gap-1.5 shadow-sm';
-      } else {
-        if (activeIndex === dataset.length - 1) {
-          activeIndex = 0; // wrap-around
-        }
-        isPlaying = true;
-        playPauseBtn.innerHTML = '<span>❚❚ 일시정지</span>';
-        playPauseBtn.className = 'bg-amber-600 hover:bg-amber-700 text-white rounded-xl p-2.5 text-xs font-black transition-all flex items-center justify-center grow gap-1.5 shadow-sm';
-        
-        playInterval = setInterval(() => {
-          if (activeIndex < dataset.length - 1) {
-            activeIndex++;
-            updateUI();
-          } else {
-            togglePlayback(); // pause at end
-          }
-        }, playSpeed);
-      }
-    }
-
-    // Attach controllers listeners
-    playPauseBtn.addEventListener('click', togglePlayback);
-    
-    resetBtn.addEventListener('click', () => {
-      if (isPlaying) togglePlayback();
-      activeIndex = 0;
-      updateUI();
-    });
-
-    playSpeedSelect.addEventListener('change', (e) => {
-      playSpeed = parseInt(e.target.value);
-      if (isPlaying) {
-        // restart with new interval speed
-        togglePlayback();
-        togglePlayback();
-      }
-    });
-
-    scrubberInput.addEventListener('input', (e) => {
-      if (isPlaying) togglePlayback();
-      activeIndex = parseInt(e.target.value);
-      updateUI();
-    });
 
     // MTS Period Tab controllers
     document.querySelectorAll('.btn-period').forEach(btn => {
