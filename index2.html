@@ -1,0 +1,3132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NH 투자증권 나무 - 모바일 MTS 복제 시뮬레이터</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Hide scrollbars for absolute native feel */
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Premium custom thin scrollbar for horizontal cards */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .custom-scrollbar {
+      -ms-overflow-style: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f1f5f9;
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen sm:py-8 sm:px-4">
+
+  <div class="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+    <!-- Header -->
+    <div class="hidden sm:flex bg-white p-6 rounded-2xl border border-slate-200 shadow-3xs flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 bg-gradient-to-br from-[#E53E3E] to-amber-600 rounded-xl text-white shadow-md">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-black text-slate-900 tracking-tight leading-none flex items-center gap-2">
+            NH투자증권 모바일 증권 나무
+            <span class="text-[9px] bg-amber-100 text-amber-800 font-extrabold px-1.5 py-0.5 rounded-sm">MTS 복제형</span>
+          </h1>
+          <p class="text-[11px] text-slate-500 mt-1">
+            "NH 투자자들" MTS 데이터 위젯 기반 인터랙티브 시계열 복제 스크린 (Standalone)
+          </p>
+        </div>
+      </div>
+      <div>
+        <span class="text-xs text-slate-400 font-mono font-bold bg-slate-100 px-3 py-1 rounded-full border border-slate-200">v1.2.0 Stable</span>
+      </div>
+    </div>
+
+    <!-- Layout Wrapper -->
+    <div class="flex justify-center items-start sm:py-4">
+      
+      <!-- Centered Mobile Device Screen -->
+      <div class="flex justify-center w-full">
+        <!-- Sleek Device Wrapper Frame -->
+        <div class="w-full sm:max-w-[395px] bg-[#f8f9fb] sm:rounded-[44px] border-0 sm:border-[10px] border-slate-950 sm:shadow-2xl overflow-hidden relative font-sans text-slate-900 flex flex-col justify-between min-h-screen sm:min-h-[840px]">
+          
+          <!-- Notch & Status Bar Emulation -->
+          <div class="bg-[#E53E3E] text-white px-5 pt-3 pb-2 flex justify-between items-center text-[10px] font-bold z-10 select-none">
+            <span>9:20</span>
+            <span class="flex items-center gap-1.5 bg-black/15 px-2.5 py-0.5 rounded-full text-[9px] font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse mr-1 inline-block"></span>
+              NH나무 모드
+            </span>
+            <div class="flex items-center gap-1 font-mono text-[9px]">
+              <span>5G</span>
+              <div class="w-3 h-1.5 bg-white/20 inline-block rounded-xs overflow-hidden relative">
+                <div class="absolute top-0 bottom-0 left-0 bg-white" style="width: 92%;"></div>
+              </div>
+              <span>92%</span>
+            </div>
+          </div>
+
+          <!-- App Title Bar -->
+          <div class="bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between shadow-3xs select-none">
+            <div class="flex items-center gap-2">
+              <span class="text-slate-400 font-bold text-lg leading-none cursor-pointer">〈</span>
+              <div class="bg-blue-50 text-blue-500 text-[9px] font-black px-1.5 py-0.5 rounded-sm flex items-center gap-0.5 font-mono">
+                KRX <span class="text-[7px]">▼</span>
+              </div>
+              <span class="font-black text-slate-800 text-base">*삼성전자</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <!-- Red Heart Accent fill -->
+              <span class="text-rose-500 text-lg">♥</span>
+              <button class="bg-black text-white text-[10px] font-black px-3.5 py-1.5 rounded-lg leading-none uppercase">주문</button>
+              <span class="text-slate-400 font-bold text-sm cursor-pointer ml-1">⋮</span>
+            </div>
+          </div>
+
+          <!-- Scrollable Stock Viewport -->
+          <div class="flex-1 overflow-y-auto pb-10 space-y-4 sm:max-h-[662px] scrollbar-none">
+            
+            <!-- Red Stock Header Banner Card -->
+            <div class="bg-[#E53E3E] text-white p-4.5 m-3 rounded-2xl shadow-xs relative overflow-hidden select-none">
+              <div class="absolute right-[-15px] bottom-[-15px] w-32 h-32 bg-white/5 rounded-full pointer-events-none"></div>
+              
+              <div class="flex justify-between items-center text-[10px] opacity-85 font-mono mb-1.5 font-bold">
+                <span>005930 | KOSPI</span>
+                <span>증30 담140 신3억</span>
+              </div>
+              
+              <div class="flex justify-between items-end mb-3">
+                <div>
+                  <div id="m-stock-price" class="text-2xl font-black tracking-tight font-mono">
+                    341,000
+                  </div>
+                  <div class="mt-1 flex items-center gap-2 font-mono font-bold text-xs opacity-95">
+                    <span id="m-stock-change">▲ 1,540</span>
+                    <span id="m-stock-percent">+0.45%</span>
+                  </div>
+                </div>
+
+                <!-- Live Sparkline Drawing -->
+                <div class="w-20 h-10 relative flex items-end opacity-80">
+                  <svg class="w-full h-full" viewBox="0 0 100 50">
+                    <path 
+                      d="M 5,42 Q 25,32 45,28 T 85,15 T 95,5" 
+                      fill="none" 
+                      stroke="white" 
+                      stroke-width="2" 
+                      stroke-linecap="round" 
+                    />
+                    <circle cx="95" cy="5" r="3" fill="#FBBF24" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center border-t border-white/15 pt-2.5 text-[10px] opacity-90 font-mono font-bold">
+                <span class="bg-black/15 px-2 py-0.5 rounded-full">NXT 가능</span>
+                <span>거래량 2,861,373(주) Y</span>
+              </div>
+            </div>
+
+            <!-- Fake Navigation Tabs (MTS style) -->
+            <div class="border-b border-slate-150 bg-white sticky top-0 z-10 flex justify-between px-2 shadow-4xs select-none">
+              <!-- Tabs -->
+              <div class="py-3 px-1.5 text-xs font-bold text-slate-400">호가</div>
+              <div class="py-3 px-1.5 text-xs font-bold text-slate-400">체결</div>
+              <div class="py-3 px-1.5 text-xs font-bold text-slate-400">일별</div>
+              <div class="py-3 px-1.5 text-xs font-bold text-slate-400">차트</div>
+              <div class="py-3 px-1.5 text-xs font-bold text-slate-400">커뮤니티</div>
+              <div class="py-3 px-2 text-xs font-black border-b-2.5 border-black text-black">NH데이터</div>
+            </div>
+
+            <!-- "NH 투자자들" MTS widget panel -->
+            <div class="bg-white p-4 mx-3 rounded-2xl border border-slate-150 shadow-3xs space-y-4">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-extrabold text-slate-800 text-xs">NH 투자자들</span>
+                  <span class="text-slate-300 text-[11px] cursor-pointer">ⓘ</span>
+                </div>
+                
+                <!-- Period Choices -->
+                <div class="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                  <button id="p-1D" class="btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all">1D</button>
+                  <button id="p-1M" class="btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all">1M</button>
+                  <button id="p-3M" class="btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all">3M</button>
+                  <button id="p-6M" class="btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all">6M</button>
+                  <button id="p-1Y" class="btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all bg-white border border-slate-200 shadow-2xs text-slate-900">1Y</button>
+                </div>
+              </div>
+
+              <!-- Horizontal scroll snapshot cards -->
+              <div id="snapshot-card-deck" class="flex gap-2.5 overflow-x-auto pb-2.5 custom-scrollbar">
+                <!-- Javascript will render cards dynamically -->
+              </div>
+
+              <!-- Dynamic Interactive Graph -->
+              <div class="bg-slate-50 rounded-xl p-3 border border-slate-150 space-y-2">
+                <div class="flex justify-between items-center text-[9px] font-extrabold text-slate-500">
+                  <span id="chart-title">평균 단가 추세선 (1Y)</span>
+                  <span id="chart-date-range" class="text-amber-500 font-mono">2025.06.16 ~ 2026.06.15</span>
+                </div>
+
+                <!-- Simulated Support Area Chart with SVG drawing! -->
+                <div id="chart-viewport" class="h-28 w-full bg-white rounded-lg p-2 border border-slate-100 flex items-center justify-center">
+                  <svg id="chart-svg" class="w-full h-full" viewBox="0 0 340 100" preserveAspectRatio="none">
+                    <!-- Dynamic rendering under JS -->
+                  </svg>
+                </div>
+              </div>
+
+              <!-- 가상 타임라인 플레이어 컨트롤러 추가 -->
+              <div class="bg-slate-50 p-4 mx-3 rounded-2xl border border-slate-150 shadow-3xs space-y-2.5 select-none">
+                <div class="flex justify-between items-center text-[10px] font-extrabold text-slate-500">
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span>가상 타임라인 플레이어</span>
+                  </span>
+                  <span id="ctrl-active-date" class="text-[#E53E3E] font-mono text-[11px] font-black">2026.06.15</span>
+                </div>
+
+                <!-- Timeline range slider -->
+                <div class="space-y-1">
+                  <input 
+                    type="range" 
+                    id="timeline-scrubber" 
+                    min="0" 
+                    max="0" 
+                    value="0" 
+                    class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#E53E3E]"
+                  />
+                  <div class="flex justify-between text-[8px] text-slate-400 font-bold font-mono">
+                    <span id="label-start-date">2025.06.16</span>
+                    <span id="label-end-date">2026.06.15</span>
+                  </div>
+                </div>
+
+                <!-- Real-time simulation control buttons -->
+                <div class="flex items-center gap-2">
+                  <!-- Play/Pause Button -->
+                  <button 
+                    id="btn-play-pause" 
+                    class="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2 px-3 text-[10px] font-black transition-all flex items-center justify-center grow gap-1.5 shadow-xs"
+                  >
+                    <span>▶ 재생</span>
+                  </button>
+                  
+                  <!-- Reset Button -->
+                  <button 
+                    id="btn-reset" 
+                    class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl py-2 px-3 text-[10px] font-black transition-all flex items-center justify-center gap-1 shadow-xs"
+                  >
+                    <span>↺ 처음으로</span>
+                  </button>
+
+                  <!-- Speed select -->
+                  <select 
+                    id="select-speed" 
+                    class="bg-white border border-slate-200 text-slate-700 rounded-xl py-2 px-2.5 text-[10px] font-extrabold shadow-3xs focus:outline-none"
+                  >
+                    <option value="600">속도: 0.6초</option>
+                    <option value="1200" selected>속도: 1.2초</option>
+                    <option value="2000">속도: 2.0초</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Section 2: 평균 매입단가 & 얼마나 지켜봤을까 -->
+            <div class="px-3 space-y-4">
+              
+              <!-- 평균 매입단가 Card -->
+              <div id="widget-avgPurchasePrice" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">평균 매입단가</span>
+                    <span class="text-slate-350 hover:text-slate-500 cursor-pointer text-xs">ⓘ</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button
+                      onclick="openSectorComparisonModal()"
+                      class="text-[10.5px] bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full font-black flex items-center gap-1 transition-all"
+                    >
+                      <svg class="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"... d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4M4 12c0 2.21 3.582 4 8 4s8-1.79 8-4"></path>
+                      </svg>
+                      <span>동일 섹터 종목 분포</span>
+                    </button>
+                    <span id="avg-body-date" class="text-[10px] text-slate-400 font-mono font-semibold">26.06.11</span>
+                  </div>
+                </div>
+
+                <div class="relative h-[280px] bg-[#fafbfc] rounded-2xl border border-slate-100 overflow-hidden shadow-inner-sm">
+                  <!-- 4 Colored Horizontal Zones -->
+                  <!-- Zone 1: Head to Shoulder -->
+                  <div id="zone-bg-1" class="absolute left-0 right-0 z-0 transition-all duration-300" style="top: 6%; height: 6%; background-color: rgb(245, 158, 11); opacity: 0.05;"></div>
+
+                  <!-- Zone 2: Shoulder to Waist -->
+                  <div id="zone-bg-2" class="absolute left-0 right-0 z-0 transition-all duration-300" style="top: 12%; height: 20%; background-color: rgb(100, 116, 139); opacity: 0.03;"></div>
+
+                  <!-- Zone 3: Waist to Knee -->
+                  <div id="zone-bg-3" class="absolute left-0 right-0 z-0 transition-all duration-300" style="top: 32%; height: 28%; background-color: rgb(99, 102, 241); opacity: 0.05;"></div>
+
+                  <!-- Zone 4: Knee to Foot -->
+                  <div id="zone-bg-4" class="absolute left-0 right-0 z-0 transition-all duration-300" style="top: 60%; height: 24%; background-color: rgb(59, 130, 246); opacity: 0.05;"></div>
+
+                  <!-- Vertical Segment Range Brackets showing that percentages are in between lines -->
+                  <!-- Segment 0: Head to Shoulder -->
+                  <div class="absolute left-[78px] w-[36px] z-35 pointer-events-none" style="top: 6%; height: 6%;">
+                    <div id="bracket-1" class="absolute right-[4px] inset-y-0 w-[2px] bg-amber-400 opacity-60 rounded-full"></div>
+                    <div id="bracket-top-1" class="absolute top-0 right-[4px] w-[14px] h-[1.5px] bg-amber-400 opacity-70"></div>
+                    <div id="bracket-bot-1" class="absolute bottom-0 right-[4px] w-[14px] h-[1.5px] bg-amber-400 opacity-70"></div>
+                    <div id="badge-box-1" class="absolute top-1/2 left-0 -translate-y-1/2 bg-indigo-100 border border-indigo-350 rounded-md px-1 py-0.5 flex flex-col items-center gap-px font-mono text-[7.5px] font-bold leading-none min-w-[34px] transition-all duration-300 text-indigo-950 shadow-sm">
+                      <div class="flex items-center gap-0.5">
+                        <span id="badge-icon-1" class="text-[7.5px]">↕</span>
+                        <span id="val-segment-1">13.5%</span>
+                      </div>
+                      <div id="badge-bar-bg-1" class="w-full h-[2px] bg-indigo-200 rounded-full overflow-hidden mt-0.5">
+                        <div id="badge-bar-1" class="h-full bg-indigo-600 rounded-full" style="width: 13.5%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Segment 1: Shoulder to Waist -->
+                  <div class="absolute left-[78px] w-[36px] z-35 pointer-events-none" style="top: 12%; height: 20%;">
+                    <div id="bracket-2" class="absolute right-[4px] inset-y-0 w-[2px] bg-slate-400 opacity-60 rounded-full"></div>
+                    <div id="bracket-top-2" class="absolute top-0 right-[4px] w-[14px] h-[1.5px] bg-slate-400 opacity-70"></div>
+                    <div id="bracket-bot-2" class="absolute bottom-0 right-[4px] w-[14px] h-[1.5px] bg-slate-400 opacity-70"></div>
+                    <div id="badge-box-2" class="absolute top-1/2 left-0 -translate-y-1/2 bg-indigo-100 border border-indigo-350 rounded-md px-1 py-0.5 flex flex-col items-center gap-px font-mono text-[7.5px] font-bold leading-none min-w-[34px] transition-all duration-300 text-indigo-950 shadow-sm">
+                      <div class="flex items-center gap-0.5">
+                        <span id="badge-icon-2" class="text-[7.5px]">↕</span>
+                        <span id="val-segment-2">18.4%</span>
+                      </div>
+                      <div id="badge-bar-bg-2" class="w-full h-[2px] bg-indigo-200 rounded-full overflow-hidden mt-0.5">
+                        <div id="badge-bar-2" class="h-full bg-indigo-600 rounded-full" style="width: 18.4%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Segment 2: Waist to Knee -->
+                  <div class="absolute left-[78px] w-[36px] z-35 pointer-events-none" style="top: 32%; height: 28%;">
+                    <div id="bracket-3" class="absolute right-[4px] inset-y-0 w-[2px] bg-indigo-400 opacity-60 rounded-full"></div>
+                    <div id="bracket-top-3" class="absolute top-0 right-[4px] w-[14px] h-[1.5px] bg-indigo-400 opacity-70"></div>
+                    <div id="bracket-bot-3" class="absolute bottom-0 right-[4px] w-[14px] h-[1.5px] bg-indigo-400 opacity-70"></div>
+                    <div id="badge-box-3" class="absolute top-1/2 left-0 -translate-y-1/2 bg-red-500 border border-red-500 rounded-md px-1 py-0.5 flex flex-col items-center gap-px font-mono text-[7.5px] font-bold leading-none min-w-[34px] transition-all duration-300 text-white font-extrabold shadow-[0_2px_5px_rgba(239,68,68,0.3)]">
+                      <div class="flex items-center gap-0.5">
+                        <span id="badge-icon-3" class="text-[7.5px]">🔥</span>
+                        <span id="val-segment-3">61.3%</span>
+                      </div>
+                      <div id="badge-bar-bg-3" class="w-full h-[2px] bg-red-700/50 rounded-full overflow-hidden mt-0.5">
+                        <div id="badge-bar-3" class="h-full bg-white rounded-full" style="width: 61.3%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Segment 3: Knee to Foot -->
+                  <div class="absolute left-[78px] w-[36px] z-35 pointer-events-none" style="top: 60%; height: 24%;">
+                    <div id="bracket-4" class="absolute right-[4px] inset-y-0 w-[2px] bg-blue-400 opacity-60 rounded-full"></div>
+                    <div id="bracket-top-4" class="absolute top-0 right-[4px] w-[14px] h-[1.5px] bg-blue-300/70"></div>
+                    <div id="bracket-bot-4" class="absolute bottom-0 right-[4px] w-[14px] h-[1.5px] bg-blue-400/70"></div>
+                    <div id="badge-box-4" class="absolute top-1/2 left-0 -translate-y-1/2 bg-slate-200 border border-slate-350 rounded-md px-1 py-0.5 flex flex-col items-center gap-px font-mono text-[7.5px] font-bold leading-none min-w-[34px] transition-all duration-300 text-slate-800 font-extrabold shadow-sm">
+                      <div class="flex items-center gap-0.5">
+                        <span id="badge-icon-4" class="text-[7.5px]">↕</span>
+                        <span id="val-segment-4">6.8%</span>
+                      </div>
+                      <div id="badge-bar-bg-4" class="w-full h-[2px] bg-slate-300 rounded-full overflow-hidden mt-0.5">
+                        <div id="badge-bar-4" class="h-full bg-slate-500 rounded-full" style="width: 6.8%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slicing Lines and Price Labels -->
+                  <!-- Level 1: Head -->
+                  <div class="absolute left-[10px] top-[6%] -translate-y-1/2 z-30 flex items-center select-none pointer-events-none" style="top: 6%;">
+                    <span class="text-[9.5px] font-bold text-rose-955 bg-rose-50/95 border border-rose-200/90 px-1.5 py-0.5 rounded-md shadow-xs leading-none">
+                      머리
+                    </span>
+                  </div>
+                  <div class="absolute left-[36px] top-[6%] -translate-y-1/2 z-25 flex items-center pointer-events-none" style="top: 6%; width: 22px;">
+                    <div class="w-full border-t border-rose-300"></div>
+                    <span class="text-[8px] text-rose-500 -ml-1">➔</span>
+                  </div>
+                  <div class="absolute left-[58px] top-[6%] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-rose-400 z-30" style="top: 6%;"></div>
+                  <div class="absolute left-[112px] right-3 top-[6%] flex items-center select-none pointer-events-none z-20" style="top: 6%;">
+                    <div class="flex-1 border-b border-solid border-rose-300/40 shrink-0"></div>
+                    <span id="val-body-head-price" class="text-[11.5px] text-slate-800 font-mono font-extrabold ml-1.5 bg-[#fafbfc] px-1 z-30 shrink-0 leading-none">316,450 원</span>
+                  </div>
+
+                  <!-- Level 2: Shoulder -->
+                  <div class="absolute left-[10px] top-[12%] -translate-y-1/2 z-30 flex items-center select-none pointer-events-none" style="top: 12%;">
+                    <span class="text-[9.5px] font-bold text-amber-955 bg-amber-50/95 border border-amber-200/90 px-1.5 py-0.5 rounded-md shadow-xs leading-none">
+                      어깨
+                    </span>
+                  </div>
+                  <div class="absolute left-[36px] top-[12%] -translate-y-1/2 z-25 flex items-center pointer-events-none" style="top: 12%; width: 22px;">
+                    <div class="w-full border-t border-amber-300"></div>
+                    <span class="text-[8px] text-amber-500 -ml-1">➔</span>
+                  </div>
+                  <div class="absolute left-[58px] top-[12%] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-amber-400 z-30" style="top: 12%;"></div>
+                  <div class="absolute left-[112px] right-3 top-[12%] flex items-center select-none pointer-events-none z-20" style="top: 12%;">
+                    <div class="flex-1 border-b border-solid border-amber-300 shrink-0"></div>
+                    <span id="val-body-shoulder-price" class="text-[11.5px] text-amber-900 font-mono font-extrabold ml-1.5 bg-[#fafbfc] px-1 z-30 shrink-0 leading-none">273,000 원</span>
+                  </div>
+
+                  <!-- Level 3: Waist -->
+                  <div class="absolute left-[10px] top-[32%] -translate-y-1/2 z-30 flex items-center select-none pointer-events-none" style="top: 32%;">
+                    <span class="text-[9.5px] font-bold text-blue-955 bg-blue-50/95 border border-blue-200/90 px-1.5 py-0.5 rounded-md shadow-xs leading-none">
+                      허리
+                    </span>
+                  </div>
+                  <div class="absolute left-[36px] top-[32%] -translate-y-1/2 z-25 flex items-center pointer-events-none" style="top: 32%; width: 22px;">
+                    <div class="w-full border-t border-blue-300"></div>
+                    <span class="text-[8px] text-blue-500 -ml-1">➔</span>
+                  </div>
+                  <div class="absolute left-[58px] top-[32%] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400 z-30" style="top: 32%;"></div>
+                  <div class="absolute left-[112px] right-3 top-[32%] flex items-center select-none pointer-events-none z-20" style="top: 32%;">
+                    <div class="flex-1 border-b border-solid border-blue-300/40 shrink-0"></div>
+                    <span id="val-body-waist-price" class="text-[11.5px] text-slate-800 font-mono font-extrabold ml-1.5 bg-[#fafbfc] px-1 z-30 shrink-0 leading-none">190,550 원</span>
+                  </div>
+
+                  <!-- Level 4: Knee -->
+                  <div class="absolute left-[10px] top-[60%] -translate-y-1/2 z-30 flex items-center select-none pointer-events-none" style="top: 60%;">
+                    <span class="text-[9.5px] font-bold text-violet-955 bg-violet-50/95 border border-violet-200/90 px-1.5 py-0.5 rounded-md shadow-xs leading-none">
+                      무릎
+                    </span>
+                  </div>
+                  <div class="absolute left-[36px] top-[60%] -translate-y-1/2 z-25 flex items-center pointer-events-none" style="top: 60%; width: 22px;">
+                    <div class="w-full border-t border-violet-300"></div>
+                    <span class="text-[8px] text-violet-500 -ml-1">➔</span>
+                  </div>
+                  <div class="absolute left-[58px] top-[60%] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-violet-400 z-30" style="top: 60%;"></div>
+                  <div class="absolute left-[112px] right-3 top-[60%] flex items-center select-none pointer-events-none z-20" style="top: 60%;">
+                    <div class="flex-1 border-b border-solid border-violet-300/40 shrink-0"></div>
+                    <span id="val-body-knee-price" class="text-[11.5px] text-indigo-900 font-mono font-extrabold ml-1.5 bg-[#fafbfc] px-1 z-30 shrink-0 leading-none">86,590 원</span>
+                  </div>
+
+                  <!-- Level 5: Foot -->
+                  <div class="absolute left-[10px] top-[84%] -translate-y-1/2 z-30 flex items-center select-none pointer-events-none" style="top: 84%;">
+                    <span class="text-[9.5px] font-bold text-slate-950 bg-slate-100/95 border border-slate-300/90 px-1.5 py-0.5 rounded-md shadow-xs leading-none">
+                      발끝
+                    </span>
+                  </div>
+                  <div class="absolute left-[36px] top-[84%] -translate-y-1/2 z-25 flex items-center pointer-events-none" style="top: 84%; width: 22px;">
+                    <div class="w-full border-t border-slate-300"></div>
+                    <span class="text-[8px] text-slate-500 -ml-1">➔</span>
+                  </div>
+                  <div class="absolute left-[58px] top-[84%] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-400 z-30" style="top: 84%;"></div>
+                  <div class="absolute left-[112px] right-3 top-[84%] flex items-center select-none pointer-events-none z-20" style="top: 84%;">
+                    <div class="flex-1 border-b border-solid border-slate-300/45 shrink-0"></div>
+                    <span id="val-body-foot-price" class="text-[11.5px] text-slate-800 font-mono font-extrabold ml-1.5 bg-[#fafbfc] px-1 z-30 shrink-0 leading-none">67,500 원</span>
+                  </div>
+
+                  <!-- Standing Body Silhouette absolutely centered left - Made bigger, prettier & highly visible -->
+                  <div class="absolute left-[-6px] top-[14px] h-[250px] w-[130px] flex items-center justify-center z-20 pointer-events-none">
+                    <svg class="h-full w-auto opacity-100 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.06)]" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
+                      <g transform="translate(50, 120) scale(1.22, 1) translate(-50, -120)">
+                        <!-- Symmetrical High-Quality Human Silhouette Path from reference -->
+                        <path d="
+                          M 50,4 
+                          C 54,4 56.5,7 56.5,12 
+                          C 56.5,13.5 58,14.5 58,16 
+                          C 58,17.5 56.5,18.5 56,20 
+                          C 54.5,23.5 52.5,24.5 52,27 
+                          C 55.5,29.5 63,31.5 65.5,35 
+                          C 68.5,39 69,49 69,63 
+                          C 69,76 69.8,89 70,95 
+                          C 70.2,101 70.5,112 70.5,119 
+                          C 70.5,124 69.8,127 69.8,130 
+                          C 70,134 69.5,138 68.5,142 
+                          C 67.5,145 65.5,143 65.5,139 
+                          C 65,132 64.8,128 64.2,126 
+                          C 64.5,108 64,95 63.5,82 
+                          C 63,70 61.5,58 60.5,48 
+                          C 59.5,56 59.3,66 59.3,73 
+                          C 59.3,82 60.5,91 60.5,98 
+                          C 60.5,109 59.5,125 58.5,140 
+                          C 57.5,155 56.5,172 56.5,182 
+                          C 56.5,192 55.5,206 55.5,216 
+                          C 55.5,224 56.5,227 56.5,228
+                          L 57.5,231 C 57.5,233 56.2,234 54.5,234
+                          C 52.5,234 51.5,233 51.5,230
+                          L 51.5,222 C 51.5,212 51.0,195 51.0,185
+                          C 51.0,180 50.5,160 50.5,140
+                          L 50.0,126
+                          L 49.5,140
+                          C 49.5,160 49.0,180 49.0,185
+                          C 49.0,195 48.5,212 48.5,222
+                          L 48.5,230 C 48.5,233 47.5,234 45.5,234
+                          C 43.8,234 42.5,233 42.5,231
+                          L 43.5,228 C 43.5,227 44.5,224 44.5,216
+                          C 44.5,206 43.5,192 43.5,182
+                          C 43.5,172 42.5,155 41.5,140
+                          C 40.5,125 39.5,109 39.5,98
+                          C 39.5,91 40.7,82 40.7,73
+                          C 40.7,66 40.5,56 39.5,48
+                          C 38.5,58 37,70 36.5,82
+                          C 36,95 35.5,108 35.8,126
+                          C 35.2,128 35,132 34.5,139
+                          C 34.5,143 32.5,145 31.5,142
+                          C 30.5,138 30,134 30.2,130
+                          C 30.2,127 29.5,124 29.5,119
+                          C 29.5,112 29.8,101 30,95
+                          C 30.2,89 31,76 31,63
+                          C 31,49 31.5,39 34.5,35
+                          C 37,31.5 44.5,29.5 48,27
+                          C 47.5,24.5 45.5,23.5 44,20
+                          C 43.5,18.5 42,17.5 42,16
+                          C 42,14.5 43.5,13.5 43.5,12
+                          C 43.5,7 46,4 50,4
+                          Z" fill="#e2e8f0" />
+
+                        <!-- White embedded namuh chest logo -->
+                        <g opacity="0.95">
+                          <!-- Arch portal logo nested nicely -->
+                          <path d="M 44.5,44 C 44.5,38.5 55.5,38.5 55.5,44 L 55.5,56 L 51.5,56 L 51.5,45.5 C 51.5,43 48.5,43 48.5,45.5 L 48.5,56 L 44.5,56 Z" fill="#ffffff" />
+                          <!-- Clean geometric text "namuh" -->
+                          <text x="50" y="67" textAnchor="middle" fill="#ffffff" fontSize="7" fontWeight="bold" letterSpacing="0.3" fontFamily="system-ui, -apple-system, sans-serif">namuh</text>
+                        </g>
+
+                       </g>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Beautiful high-contrast visual bar indicating shareholder distribution -->
+                <div class="bg-[#fcfdfe] p-3 rounded-2xl border border-slate-100/90 space-y-2.5 shadow-sm select-none">
+                  <div class="hidden flex justify-between items-center text-[10px] text-slate-400 font-extrabold px-0.5" style="display: none;">
+                    <span>손실 주주 비율 <span id="gauge-loss-label">18.39%</span></span>
+                    <span>수익 주주 비율 <span id="gauge-profit-label">81.61%</span></span>
+                  </div>
+                  
+                  <div class="h-2 w-full rounded-full bg-slate-100/80 overflow-hidden flex shadow-inner">
+                    <div 
+                      id="gauge-loss-bar"
+                      class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 transition-all duration-300" 
+                      style="width: 18.39%"
+                    ></div>
+                    <div 
+                      id="gauge-profit-bar"
+                      class="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-300" 
+                      style="width: 81.61%"
+                    ></div>
+                  </div>
+                  
+                  <div class="grid grid-cols-3 gap-1 px-1 text-center">
+                    <div>
+                      <span class="text-[8px] text-slate-400 block leading-tight font-extrabold">손실 주주</span>
+                      <span id="val-body-loss-ratio" class="text-[11px] font-black font-mono text-blue-600">18.39%</span>
+                    </div>
+                    
+                    <div class="rounded-lg bg-emerald-50 border border-emerald-100/40 py-0.5">
+                      <span class="text-[8px] text-emerald-600 block leading-tight font-bold">기준일 종가</span>
+                      <span id="val-body-stock-price" class="text-[10px] font-black font-mono text-emerald-700">335,500 원</span>
+                    </div>
+                    
+                    <div>
+                      <span class="text-[8px] text-slate-400 block leading-tight font-extrabold">수익 주주</span>
+                      <span id="val-body-profit-ratio" class="text-[11px] font-black font-mono text-rose-500">81.61%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 모바일 복제 뷰: 구간별(사이) 비율 시각화에 대한 가독성 및 UI 안내 주석 추가 -->
+                <div class="text-[9.5px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-start gap-1 leading-normal select-none">
+                  <span class="text-amber-500 font-bold">※</span>
+                  <span>
+                    수직 세그먼트 비율은 각 경계선<strong>(최상단·어깨·기준선·무릎·최하단)</strong> 사이의 <strong>구간별 투자자 분포 비율</strong>을 뜻합니다.
+                    <br />
+                    (예: 최상단과 어깨 사이 <span id="annot-p1" class="font-bold text-amber-900">13.5%</span>, 어깨와 기준선 사이 <span id="annot-p2" class="font-bold text-slate-800">18.4%</span>)
+                  </span>
+                </div>
+              </div>
+
+              <!-- 얼마나 지켜봤을까 Card -->
+              <div id="widget-watchCounts" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">얼마나 지켜봤을까</span>
+                    <span class="text-slate-350 hover:text-slate-500 cursor-pointer text-xs">ⓘ</span>
+                  </div>
+                  <span id="watch-date-range" class="text-[10px] text-slate-400 font-mono font-bold">26.05.13 ~ 26.06.11</span>
+                </div>
+
+                <!-- Tab toggles -->
+                <div class="flex gap-2.5">
+                  <button id="toggle-watch-views" class="flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-[#12141a] border-[#12141a] text-white shadow-3xs">
+                    조회건수
+                  </button>
+                  <button id="toggle-watch-list" class="flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-white border-slate-200 text-slate-400 hover:bg-slate-50">
+                    관심종목
+                  </button>
+                </div>
+
+                <!-- Guide message explaining optimized automatic scale system -->
+                <div class="bg-[#f8faff] px-3 py-2.5 rounded-xl border border-slate-100 text-[10px] text-slate-600 font-bold leading-normal">
+                  💡 <span class="text-indigo-600">수급 지표 분석:</span> 현재 조회건수/관심등록 추이와 함께, 해당 조회 기간 전체 데이터의 <strong>평균값</strong> 및 중앙에 위치한 <strong>중위값</strong> 가이드라인을 동시 추적하여 현재 활성도를 정밀 분석합니다.
+                </div>
+
+                <!-- Content Line Chart with Average and Median references -->
+                <div class="bg-[#fbfcff] p-3 rounded-2xl border border-slate-100 space-y-2">
+                  <div class="h-40 w-full pr-1 px-1 pt-1.5 flex items-center justify-center">
+                    <svg id="watch-chart-svg" class="w-full h-full" viewBox="0 0 340 160" preserveAspectRatio="none"></svg>
+                  </div>
+
+                  <!-- Clean, fully integrated legends -->
+                  <div class="flex flex-wrap gap-x-3 gap-y-1 text-[9.5px] font-extrabold text-slate-500 pt-2 border-t border-slate-100/70 px-1 justify-center">
+                    <div class="flex items-center gap-1">
+                      <span id="watch-chart-legend-dot" class="w-1.5 h-1.5 rounded-full inline-block bg-[#111111]"></span>
+                      <span id="watch-chart-legend-label">조회건수</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="w-2.5 h-0.5 border-t-2 border-dashed border-violet-400 inline-block"></span>
+                      <span class="text-[9px] text-violet-500 font-bold">평균값</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="w-2.5 h-0.5 border-t-2 border-dashed border-emerald-500 inline-block"></span>
+                      <span class="text-[9px] text-emerald-600 font-bold">중위값</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Display block -->
+                <div class="bg-[#fbfcfd] p-4 border border-slate-110 rounded-2xl space-y-3">
+                  <div class="flex justify-between items-center text-[9px] text-slate-400 border-b border-slate-100/50 pb-1.5 font-bold">
+                    <span>선택 지표 정보 요약</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span id="watch-metric-label" class="text-[11px] font-bold text-slate-600">해당 기간 총 조회수</span>
+                    <span id="watch-metric-value" class="text-xs font-black font-mono text-[#E53E3E] leading-none">3,284,066 회</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-slate-600">동일군 대비 활성 분석</span>
+                    <span id="watch-metric-subtext" class="text-[10px] font-bold text-emerald-650 leading-none">이웃 주주 동일종목 대비 <strong class="text-emerald-600">4.2배</strong> 활성 조회 중</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 누가 사고 팔았을까 Card -->
+              <div id="widget-whoBoughtSold" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">누가 사고 팔았을까</span>
+                    <span class="text-slate-350 hover:text-slate-500 cursor-pointer text-xs">ⓘ</span>
+                  </div>
+                  <span id="trade-date-range" class="text-[10px] text-slate-400 font-mono font-bold">26.05.13 ~ 26.06.11</span>
+                </div>
+
+                <!-- Tab toggles -->
+                <div class="flex gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-100">
+                  <button id="toggle-trade-buy" class="flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-slate-900 border-slate-900 text-white shadow-3xs">
+                    매수 금액
+                  </button>
+                  <button id="toggle-trade-sell" class="flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600">
+                    매도 금액
+                  </button>
+                  <button id="toggle-trade-net" class="flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600">
+                    순매수 금액
+                  </button>
+                </div>
+
+                <!-- 실시간 투자주체별 거래추이 Chart -->
+                <div class="bg-[#fbfcff] p-2.5 rounded-2xl border border-slate-100 space-y-1.5 shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]">
+                  <div class="h-28 w-full pr-1 px-1 pt-1.5 flex items-center justify-center">
+                    <svg id="trade-chart-svg" class="w-full h-full" viewBox="0 0 340 100" preserveAspectRatio="none"></svg>
+                  </div>
+                  <!-- Mini legend indicators -->
+                  <div class="flex justify-center items-center gap-3 text-[8.5px] font-extrabold text-slate-450 border-t border-slate-100/60 pt-1.5">
+                    <div class="flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full inline-block bg-[#EE5A24]" />
+                      <span>개인</span>
+                    </div>
+                    <div class="flex items-center gap-1 font-bold">
+                      <span class="w-1.5 h-1.5 rounded-full inline-block bg-[#06B6D4]" />
+                      <span>기관</span>
+                    </div>
+                    <div class="flex items-center gap-1 font-bold">
+                      <span class="w-1.5 h-1.5 rounded-full inline-block bg-[#3B82F6]" />
+                      <span>외국인</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Display block for Personal, Institutional, Foreigners with modern gauge/figures -->
+                <div class="bg-[#fbfcfd] p-4 border border-slate-110 rounded-2xl space-y-3">
+                  <div class="flex justify-between items-center text-[9px] text-slate-400 border-b border-slate-100/50 pb-1.5 font-bold">
+                    <span>실시간 누적 데이터 추이</span>
+                    <span class="text-indigo-600 font-black bg-indigo-50 px-1.5 py-0.5 rounded font-mono">26.06.15 기준</span>
+                  </div>
+                  <!-- 개인 -->
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full inline-block bg-[#EE5A24]"></span>
+                      <span id="trade-label-individual" class="text-[11px] font-bold text-slate-600">개인 매수</span>
+                    </div>
+                    <span id="trade-val-individual" class="text-xs font-extrabold font-mono text-[#EE5A24]">350억</span>
+                  </div>
+                  <!-- 기관 -->
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full inline-block bg-[#06B6D4]"></span>
+                      <span id="trade-label-institution" class="text-[11px] font-bold text-slate-600">기관 매수</span>
+                    </div>
+                    <span id="trade-val-institution" class="text-xs font-extrabold font-mono text-[#06B6D4]">220억</span>
+                  </div>
+                  <!-- 외국인 -->
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full inline-block bg-[#3B82F6]"></span>
+                      <span id="trade-label-foreigner" class="text-[11px] font-bold text-slate-600">외국인 매수</span>
+                    </div>
+                    <span id="trade-val-foreigner" class="text-xs font-extrabold font-mono text-[#3B82F6]">440억</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 신규매수/전량매도 Card -->
+              <div id="widget-newBuyFullSell" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">신규매수/전량매도</span>
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black cursor-help" title="해당 종목을 신규 매수한 고객 수와 보유 비중 전체를 100% 매도(전량 처리)한 고객 수의 분포 추이">?</span>
+                  </div>
+                  <span id="new-buy-date-range" class="text-[10px] text-slate-400 font-mono font-bold">26.05.13~26.06.11</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                  <div>
+                    <span class="text-[9px] text-slate-400 block font-bold">신규매수 고객수</span>
+                    <span id="new-buy-val" class="text-xs font-black font-mono text-rose-500">- 명</span>
+                  </div>
+                  <div class="border-l border-slate-200">
+                    <span class="text-[9px] text-slate-400 block font-bold">전량매도 고객수</span>
+                    <span id="full-sell-val" class="text-xs font-black font-mono text-sky-500">- 명</span>
+                  </div>
+                </div>
+
+                <div class="bg-[#fbfcff] p-2.5 rounded-2xl border border-slate-100 space-y-1.5 shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]">
+                  <div class="h-40 w-full pr-1 px-1 pt-1.5 flex items-center justify-center">
+                    <svg id="new-buy-sell-chart-svg" class="w-full h-full" viewBox="0 0 340 160" preserveAspectRatio="none"></svg>
+                  </div>
+                  <div class="flex justify-center items-center gap-3 text-[8.5px] font-extrabold text-slate-450 border-t border-slate-100/60 pt-1.5">
+                    <div class="flex items-center gap-1">
+                      <span class="w-2 h-2 rounded bg-sky-400 inline-block"></span>
+                      <span>전량매도 고객수</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="w-2 h-2 rounded bg-rose-450 inline-block" style="background-color: #F87171"></span>
+                      <span>신규매수 고객수</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 어디서 왔을까 Card -->
+              <div id="widget-whereFromTo" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">어디서 왔을까</span>
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black cursor-help" title="신규 매수 고객들의 직전 매도 종목 분포 (매도금 출처)">?</span>
+                  </div>
+                  <span id="where-widget-date" class="text-[10px] text-slate-400 font-mono font-bold">26.06.11 기준</span>
+                </div>
+
+                <!-- Custom Select Buttons -->
+                <div class="flex gap-1 overflow-x-auto pb-0.5">
+                  <button id="where-btn-day" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">전일</button>
+                  <button id="where-btn-week" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">1주일</button>
+                  <button id="where-btn-monthLow" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">1달최저가</button>
+                  <button id="where-btn-threeMonthsLow" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">3달최저가</button>
+                </div>
+
+                <!-- Horizontal Bars list -->
+                <div id="where-list-container" class="space-y-3.5 pt-1">
+                  <!-- Generated dynamically via JS -->
+                </div>
+
+                <div class="flex justify-center items-center gap-1.5 text-[9px] text-slate-400 font-bold border-t border-slate-100/70 pt-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#86EFAC] inline-block"></span>
+                  <span>매도금액비중 (%)</span>
+                </div>
+              </div>
+
+              <!-- 어디로 갔을까 Card -->
+              <div id="widget-whereDidTheyGo" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">어디로 갔을까</span>
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black cursor-help" title="삼성전자 매도 고객들의 직전 매입 종목 분포 (매수처)">?</span>
+                  </div>
+                  <span id="go-widget-date" class="text-[10px] text-slate-400 font-mono font-bold">26.06.11 기준</span>
+                </div>
+
+                <!-- Custom Select Buttons -->
+                <div class="flex gap-1 overflow-x-auto pb-0.5">
+                  <button id="go-btn-day" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">전일</button>
+                  <button id="go-btn-week" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">1주일</button>
+                  <button id="go-btn-monthHigh" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">1달최고가</button>
+                  <button id="go-btn-threeMonthsHigh" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">3달최고가</button>
+                </div>
+
+                <!-- Horizontal Bars list -->
+                <div id="go-list-container" class="space-y-3.5 pt-1">
+                  <!-- Generated dynamically via JS -->
+                </div>
+
+                <div class="flex justify-center items-center gap-1.5 text-[9px] text-slate-400 font-bold border-t border-slate-100/70 pt-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#FED7AA] inline-block"></span>
+                  <span>매수금액비중 (%)</span>
+                </div>
+              </div>
+
+              <!-- 개인투자자 구성 Card -->
+              <div id="widget-investorComposition" class="bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300">
+                <div class="flex justify-between items-center text-slate-800 border-b border-slate-100 pb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-[#111] text-[13px] tracking-tight">개인투자자 구성</span>
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black cursor-help" title="해당 일자 기준 개인투자자들의 주요 분포(자산 규모, 투자 실력, 연령대) 및 각 집단이 선호하는 다른 투자 자산 현황 정보">?</span>
+                  </div>
+                  <span id="comp-widget-date" class="text-[10px] text-slate-400 font-mono font-bold">26.06.11 기준</span>
+                </div>
+
+                <!-- Tabs & status -->
+                <div class="flex justify-between items-center bg-transparent">
+                  <div class="flex gap-1 overflow-x-auto pb-0.5">
+                    <button id="comp-tab-btn-asset" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">자산규모</button>
+                    <button id="comp-tab-btn-skill" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">투자실력</button>
+                    <button id="comp-tab-btn-age" class="py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all">연령대</button>
+                  </div>
+                  <div class="flex items-center gap-1 text-[9px] text-slate-500 font-bold">
+                    <span>투자자수</span>
+                    <span class="w-1.5 h-1.5 bg-slate-900 rounded-[1px] inline-block"></span>
+                  </div>
+                </div>
+
+                <!-- Pie Chart & Legend Row -->
+                <div class="grid grid-cols-12 gap-2 items-center py-1">
+                  <!-- Left: Pie Chart SVG -->
+                  <div class="col-span-7 flex justify-center items-center">
+                    <svg id="comp-pie-svg" class="w-36 h-36 filter drop-shadow-xs overflow-visible" viewBox="0 0 180 180"></svg>
+                  </div>
+                  <!-- Right: Legend Panel -->
+                  <div id="comp-legend-container" class="col-span-5 flex flex-col justify-center space-y-2 pl-1.5">
+                    <!-- Generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Bottom selector & Top Other Stocks -->
+                <div class="space-y-3 pt-1 border-t border-slate-100">
+                  <div class="flex items-center gap-1.5 text-slate-800">
+                    <div class="relative inline-flex items-center">
+                      <select id="comp-sub-select" class="appearance-none pr-4.5 pl-0.5 py-0.5 font-extrabold text-[12.5px] text-[#111] bg-transparent focus:outline-none cursor-pointer border-b border-transparent hover:border-slate-300">
+                        <!-- options generated dynamically -->
+                      </select>
+                      <span class="absolute right-1 text-[6.5px] text-slate-400 pointer-events-none">▼</span>
+                    </div>
+                    <span class="text-[10.5px] text-slate-400 font-bold">투자자가 보유한 다른 종목</span>
+                  </div>
+
+                  <!-- Horizontally scrollable list -->
+                  <div id="comp-stocks-list" class="flex gap-2 overflow-x-auto pb-0.5">
+                    <!-- Generated dynamically -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          </div>
+
+          <!-- Bottom Mobile Mock Navigation Bar -->
+          <div class="bg-[#12141a] text-white px-3 py-3 rounded-b-[34px] flex justify-between items-center text-[10px] font-bold z-10 border-t border-slate-800 select-none">
+            <div class="flex flex-col items-center gap-1 cursor-pointer opacity-70">
+              <span class="text-base leading-none">☰</span>
+              <span class="text-[8px] font-medium scale-90">메뉴</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 cursor-pointer opacity-70">
+              <span class="text-base leading-none">⌂</span>
+              <span class="text-[8px] font-medium scale-90">홈</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 cursor-pointer">
+              <span class="text-[#FBBF24] text-base leading-none">★</span>
+              <span class="text-[#FBBF24] text-[8px] font-black scale-90">관심그룹</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 cursor-pointer opacity-70">
+              <span class="text-base leading-none text-rose-450">●</span>
+              <span class="text-[8px] font-medium scale-90">주식현재가</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 cursor-pointer opacity-70">
+              <span class="text-base leading-none text-indigo-400">◆</span>
+              <span class="text-[8px] font-medium scale-90">주식잔고</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  <!-- Sector Comparison Modal Overlay -->
+  <div id="sector-compare-modal" class="fixed inset-0 z-[999] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-x-hidden overflow-y-auto">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden max-h-[90vh] md:max-h-[85vh] animate-in fade-in zoom-in duration-150">
+      
+      <!-- Left Side: Body chart visual mapping -->
+      <div class="md:w-5/12 bg-slate-50 p-6 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-slate-200 relative select-none">
+        <div class="w-full">
+          <h3 class="text-sm font-extrabold text-slate-800 mt-2">반도체 섹터 종가 분포 맵</h3>
+          <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+            현재 일자 기준 종가가 단가 분포 상 어디에 정렬되어 있는지 시각화 지도입니다.
+          </p>
+        </div>
+
+        <!-- Silhouette box -->
+        <div class="relative w-full h-[320px] bg-white rounded-2xl border border-slate-150 my-4 overflow-hidden flex flex-col">
+          
+          <!-- Silhouette SVG (background) -->
+          <div class="opacity-10 h-full pointer-events-none absolute inset-0 flex items-center justify-center">
+            <svg class="h-[95%] w-auto" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
+              <path d="
+                M 50,4 C 54,4 56.5,7 56.5,12 C 56.5,13.5 58,14.5 58,16 C 58,17.5 56.5,18.5 56,20 
+                C 54.5,23.5 52.5,24.5 52,27 C 55.5,29.5 63,31.5 65.5,35 C 68.5,39 69,49 69,63 
+                C 69,76 69.8,89 70,95 C 70.2,101 70.5,112 70.5,119 C 70.5,124 69.8,127 69.8,130 
+                C 70,134 69.5,138 68.5,142 C 67.5,145 65.5,143 65.5,139 C 65,132 64.8,128 64.2,126 
+                C 64.5,108 64,95 63.5,82 C 63,70 61.5,58 60.5,48 C 59.5,56 59.3,66 59.3,73 
+                C 59.3,82 60.5,91 60.5,98 C 60.5,109 59.5,125 58.5,140 C 57.5,155 56.5,172 56.5,182 
+                C 56.5,192 55.5,206 55.5,216 C 55.5,224 56.5,227 56.5,228 L 57.5,231 C 57.5,233 56.2,234 54.5,234
+                C 52.5,234 51.5,233 51.5,230 L 51.5,222 C 51.5,212 51.0,195 51.0,185 C 51.0,180 50.5,160 50.5,140
+                L 50.0,126 L 49.5,140 C 49.5,160 49.0,180 49.0,185 C 49.0,195 48.5,212 48.5,222
+                L 48.5,230 C 48.5,233 47.5,234 45.5,234 C 43.8,234 42.5,233 42.5,231 L 43.5,228 
+                C 43.5,227 44.5,224 44.5,216 C 44.5,206 43.5,192 43.5,182 C 43.5,172 42.5,155 41.5,140
+                C 40.5,125 39.5,109 39.5,98 C 39.5,91 40.7,82 40.7,73 C 40.7,66 40.5,56 39.5,48
+                C 38.5,58 37,70 36.5,82 C 36,95 35.5,108 35.8,126 C 35.2,128 35,132 34.5,139
+                C 34.5,143 32.5,145 31.5,142 C 30.5,138 30,134 30.2,130 C 30.2,127 29.5,124 29.5,119
+                C 29.5,112 29.8,101 30,95 C 30.2,89 31,76 31,63 C 31,49 31.5,39 34.5,35
+                C 37,31.5 44.5,29.5 48,27 C 47.5,24.5 45.5,23.5 44,20 C 43.5,18.5 42,17.5 42,16
+                C 42,14.5 43.5,13.5 43.5,12 C 43.5,7 46,4 50,4 Z" fill="#475569" />
+            </svg>
+          </div>
+
+          <!-- Four zones inside body pins container -->
+          <div id="modal-body-pins" class="absolute inset-0 z-30 flex flex-col pointer-events-none">
+            <!-- Pin elements inserted dynamically via JS update -->
+          </div>
+
+        </div>
+
+        <div class="text-[9.5px] text-slate-400 font-medium text-center leading-relaxed">
+          * 각 분류 영역은 투자자의 평균 매입 단가 분포에 따른 분위별 구간으로 산출되었습니다.
+        </div>
+      </div>
+
+      <!-- Right Side: Detailed and Dynamic Analysis content -->
+      <div class="md:w-7/12 p-6 flex flex-col justify-between overflow-y-auto max-h-[50vh] md:max-h-none">
+        
+        <!-- Header with Exit -->
+        <div class="flex justify-between items-start pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-sm font-extrabold text-slate-800 leading-tight">동일 섹터(IT/반도체) 종가 분포 분석</h2>
+            <p class="text-[10px] text-slate-450 mt-1">기준일자: <span id="modal-ref-date" class="font-mono font-bold">26.06.11</span> 데이터 실종 동기화 시뮬값</p>
+          </div>
+          <button 
+            onclick="closeSectorComparisonModal()"
+            class="p-1 rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors cursor-pointer"
+          >
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Sector stock selection grid -->
+        <div id="modal-stock-grid" class="grid grid-cols-5 gap-1.5 py-3.5">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Highlighted Selected Stock Box card -->
+        <div id="modal-stock-card-details" class="bg-slate-50 rounded-2xl p-4 border border-slate-150 flex-1 flex flex-col justify-between min-h-[160px] space-y-4">
+          <!-- Dynamically populated card details via JS -->
+        </div>
+
+        <!-- Footer close option -->
+        <div class="pt-3.5 border-t border-slate-100 flex justify-end">
+          <button 
+            onclick="closeSectorComparisonModal()"
+            class="bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-black text-xs px-5 py-2 rounded-full shadow-md transition-all cursor-pointer"
+          >
+            닫기
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Info Banner at bottom -->
+    <div class="hidden sm:block bg-slate-900 text-slate-200 border border-slate-800 p-5 rounded-2xl shadow-lg leading-relaxed text-xs">
+      <h4 class="font-black text-white text-sm mb-1">💡 나무 모바일 복제 시뮬레이터 가이드</h4>
+      <p class="text-slate-400">
+        본 HTML 파일은 NH나무 스마트폰 앱 "NH데이터 - [NH 투자자들]" 위젯 영역의 고해상도 시뮬레이션 복각판입니다. 
+        인증이나 모바일 네트워크가 비연결된 오프라인 환경에서도 나무의 위젯 카드 선택과 기간 탭(1M·3M·6M·1Y) 조작에 맞춤으로 1년 간의 총 투자자, 평균수익률, 평균단가, 평균보유량 및 총보유수량의 가상 차트 추세선을 완전하게 연동 렌더링하도록 제작되었습니다.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Javascript Core Engine logic -->
+  <script>
+    // System Data Generator
+    let dataset = [];
+    
+    function initData() {
+      const data = [];
+      const start = new Date('2025-06-16');
+      const end = new Date('2026-05-14');
+      let current = new Date(start);
+      const tradingDates = [];
+      while (current <= end) {
+        const day = current.getDay();
+        if (day !== 0 && day !== 6) {
+          tradingDates.push(new Date(current));
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      const totalSteps = tradingDates.length;
+      tradingDates.forEach((dateObj, index) => {
+        const progress = index / totalSteps;
+        const priceNoise = 
+          (Math.sin(index / 3.5) * 22000) +
+          (Math.cos(index / 10) * 16000) +
+          (Math.sin(index / 40) * 28000) +
+          (Math.sin(index) * 4500);
+        const priceTrend = progress * 92000;
+        const stockPrice = Math.round((210000 + priceTrend + priceNoise) / 500) * 500;
+        
+        const prevPrice = data.length > 0 ? data[data.length - 1].stockPrice : 209500;
+        const stockChange = stockPrice - prevPrice;
+        const stockPercent = parseFloat(((stockChange / prevPrice) * 100).toFixed(2));
+        const totalInvestors = Math.round(620000 + (progress * 334200) + (Math.cos(index / 12) * 25000) + (Math.sin(index / 4) * 4000));
+        const relDeviation = priceNoise / 52000;
+        const avgReturnRate = parseFloat((35.0 + (progress * 87.4) + (relDeviation * 45.0) + (Math.sin(index / 2) * 4.5)).toFixed(2));
+        const avgPurchasePrice = Math.round((138000 + (progress * 57200) + (Math.sin(index / 15) * 12000) - (relDeviation * 5000)) / 100) * 100;
+        const avgHoldQuantity = Math.round(65 + (progress * 23) + (Math.cos(index / 25) * 6));
+        const totalHoldQuantity = totalInvestors * avgHoldQuantity;
+        const lossInvestorRatio = parseFloat((35.0 - (progress * 8.5) - (relDeviation * 28.0) + (Math.cos(index / 3) * 3.5)).toFixed(2));
+        const shoulderPrice = Math.round((stockPrice * 0.81) / 10) * 10;
+        const headPrice = Math.round((stockPrice * 0.94) / 10) * 10;
+
+        const yy = String(dateObj.getFullYear()).substring(2);
+        const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const dd = String(dateObj.getDate()).padStart(2, '0');
+        const dateStr = `${yy}.${mm}.${dd}`;
+        const fullDateStr = `${dateObj.getFullYear()}-${mm}-${dd}`;
+
+        data.push({
+          date: dateStr,
+          fullDate: fullDateStr,
+          stockPrice,
+          stockChange,
+          stockPercent,
+          totalInvestors,
+          avgReturnRate,
+          avgPurchasePrice,
+          avgHoldQuantity,
+          totalHoldQuantity,
+          lossInvestorRatio,
+          shoulderPrice,
+          headPrice
+        });
+      });
+
+      const explicitData = [
+        {
+          date: '26.05.15',
+          fullDate: '2026-05-15',
+          stockPrice: 312000,
+          stockChange: -1500,
+          stockPercent: -0.48,
+          totalInvestors: 954200,
+          avgReturnRate: 122.40,
+          avgPurchasePrice: 195200,
+          avgHoldQuantity: 88,
+          totalHoldQuantity: 83969600,
+          lossInvestorRatio: 26.50,
+          shoulderPrice: 270100,
+          headPrice: 315000
+        },
+        {
+          date: '26.05.18',
+          fullDate: '2026-05-18',
+          stockPrice: 314500,
+          stockChange: 2500,
+          stockPercent: 0.80,
+          totalInvestors: 955100,
+          avgReturnRate: 124.15,
+          avgPurchasePrice: 194800,
+          avgHoldQuantity: 89,
+          totalHoldQuantity: 85003900,
+          lossInvestorRatio: 24.10,
+          shoulderPrice: 270300,
+          headPrice: 315500
+        },
+        {
+          date: '26.05.19',
+          fullDate: '2026-05-19',
+          stockPrice: 318000,
+          stockChange: 3500,
+          stockPercent: 1.11,
+          totalInvestors: 956400,
+          avgReturnRate: 128.50,
+          avgPurchasePrice: 194100,
+          avgHoldQuantity: 89,
+          totalHoldQuantity: 85119600,
+          lossInvestorRatio: 22.80,
+          shoulderPrice: 270850,
+          headPrice: 316000
+        },
+        {
+          date: '26.05.20',
+          fullDate: '2026-05-20',
+          stockPrice: 319500,
+          stockChange: 1500,
+          stockPercent: 0.47,
+          totalInvestors: 957200,
+          avgReturnRate: 130.10,
+          avgPurchasePrice: 193400,
+          avgHoldQuantity: 90,
+          totalHoldQuantity: 86148000,
+          lossInvestorRatio: 21.40,
+          shoulderPrice: 271100,
+          headPrice: 316200
+        },
+        {
+          date: '26.05.21',
+          fullDate: '2026-05-21',
+          stockPrice: 317000,
+          stockChange: -2500,
+          stockPercent: -0.78,
+          totalInvestors: 958000,
+          avgReturnRate: 127.80,
+          avgPurchasePrice: 193100,
+          avgHoldQuantity: 90,
+          totalHoldQuantity: 86220000,
+          lossInvestorRatio: 23.20,
+          shoulderPrice: 271200,
+          headPrice: 316300
+        },
+        {
+          date: '26.05.22',
+          fullDate: '2026-05-22',
+          stockPrice: 320000,
+          stockChange: 3000,
+          stockPercent: 0.95,
+          totalInvestors: 959100,
+          avgReturnRate: 131.20,
+          avgPurchasePrice: 192800,
+          avgHoldQuantity: 91,
+          totalHoldQuantity: 87278100,
+          lossInvestorRatio: 20.10,
+          shoulderPrice: 271400,
+          headPrice: 316500
+        },
+        {
+          date: '26.05.25',
+          fullDate: '2026-05-25',
+          stockPrice: 320500,
+          stockChange: 500,
+          stockPercent: 0.16,
+          totalInvestors: 959500,
+          avgReturnRate: 132.50,
+          avgPurchasePrice: 192500,
+          avgHoldQuantity: 91,
+          totalHoldQuantity: 87314500,
+          lossInvestorRatio: 19.40,
+          shoulderPrice: 271500,
+          headPrice: 316550
+        },
+        {
+          date: '26.05.26',
+          fullDate: '2026-05-26',
+          stockPrice: 322000,
+          stockChange: 1500,
+          stockPercent: 0.47,
+          totalInvestors: 960100,
+          avgReturnRate: 133.40,
+          avgPurchasePrice: 192100,
+          avgHoldQuantity: 91,
+          totalHoldQuantity: 87369100,
+          lossInvestorRatio: 18.20,
+          shoulderPrice: 271700,
+          headPrice: 316600
+        },
+        {
+          date: '26.05.27',
+          fullDate: '2026-05-27',
+          stockPrice: 325000,
+          stockChange: 3000,
+          stockPercent: 0.93,
+          totalInvestors: 960800,
+          avgReturnRate: 135.20,
+          avgPurchasePrice: 191800,
+          avgHoldQuantity: 91,
+          totalHoldQuantity: 87432800,
+          lossInvestorRatio: 17.10,
+          shoulderPrice: 271800,
+          headPrice: 316650
+        },
+        {
+          date: '26.05.28',
+          fullDate: '2026-05-28',
+          stockPrice: 327500,
+          stockChange: 2500,
+          stockPercent: 0.77,
+          totalInvestors: 961100,
+          avgReturnRate: 137.40,
+          avgPurchasePrice: 191100,
+          avgHoldQuantity: 91,
+          totalHoldQuantity: 87460100,
+          lossInvestorRatio: 15.90,
+          shoulderPrice: 271820,
+          headPrice: 316700
+        },
+        {
+          date: '26.05.29',
+          fullDate: '2026-05-29',
+          stockPrice: 326000,
+          stockChange: -1500,
+          stockPercent: -0.46,
+          totalInvestors: 961800,
+          avgReturnRate: 136.10,
+          avgPurchasePrice: 190800,
+          avgHoldQuantity: 92,
+          totalHoldQuantity: 88485600,
+          lossInvestorRatio: 16.80,
+          shoulderPrice: 271830,
+          headPrice: 316750
+        },
+        {
+          date: '26.05.30',
+          fullDate: '2026-05-30',
+          stockPrice: 329000,
+          stockChange: 3000,
+          stockPercent: 0.92,
+          totalInvestors: 962310,
+          avgReturnRate: 138.90,
+          avgPurchasePrice: 190100,
+          avgHoldQuantity: 92,
+          totalHoldQuantity: 88532520,
+          lossInvestorRatio: 14.50,
+          shoulderPrice: 271840,
+          headPrice: 318000
+        },
+        {
+          date: '26.06.09',
+          fullDate: '2026-06-09',
+          stockPrice: 333000,
+          stockChange: -1000,
+          stockPercent: -0.30,
+          totalInvestors: 965112,
+          avgReturnRate: 144.20,
+          avgPurchasePrice: 188795,
+          avgHoldQuantity: 93,
+          totalHoldQuantity: 89755416,
+          lossInvestorRatio: 12.80,
+          shoulderPrice: 271600,
+          headPrice: 316650
+        },
+        {
+          date: '26.06.10',
+          fullDate: '2026-06-10',
+          stockPrice: 322500,
+          stockChange: -10500,
+          stockPercent: -3.15,
+          totalInvestors: 965701,
+          avgReturnRate: 134.11,
+          avgPurchasePrice: 188741,
+          avgHoldQuantity: 93,
+          totalHoldQuantity: 89810193,
+          lossInvestorRatio: 22.45,
+          shoulderPrice: 271500,
+          headPrice: 316500
+        },
+        {
+          date: '26.06.11',
+          fullDate: '2026-06-11',
+          stockPrice: 335500,
+          stockChange: 13000,
+          stockPercent: 4.03,
+          totalInvestors: 965902,
+          avgReturnRate: 143.89,
+          avgPurchasePrice: 188732,
+          avgHoldQuantity: 93,
+          totalHoldQuantity: 91340136,
+          lossInvestorRatio: 18.39,
+          shoulderPrice: 273000,
+          headPrice: 316454
+        },
+        {
+          date: '26.06.12',
+          fullDate: '2026-06-12',
+          stockPrice: 339500,
+          stockChange: 2500,
+          stockPercent: 0.74,
+          totalInvestors: 966030,
+          avgReturnRate: 147.34,
+          avgPurchasePrice: 187492,
+          avgHoldQuantity: 94,
+          totalHoldQuantity: 91522030,
+          lossInvestorRatio: 8.45,
+          shoulderPrice: 271280,
+          headPrice: 317500
+        },
+        {
+          date: '26.06.15',
+          fullDate: '2026-06-15',
+          stockPrice: 341000,
+          stockChange: 1540,
+          stockPercent: 0.45,
+          totalInvestors: 967110,
+          avgReturnRate: 149.20,
+          avgPurchasePrice: 187121,
+          avgHoldQuantity: 94,
+          totalHoldQuantity: 91908340,
+          lossInvestorRatio: 7.20,
+          shoulderPrice: 270900,
+          headPrice: 318200
+        }
+      ];
+
+      dataset = [...data, ...explicitData];
+    }
+
+    initData();
+
+    // Configuration / State
+    const metrics = [
+      { key: 'avgPurchasePrice', label: '평균 단가', unit: '원', color: '#F59E0B' },
+      { key: 'whoBoughtSold', label: '누가 사고 팔았을까', unit: '억', color: '#EF4444' },
+      { key: 'watchCounts', label: '얼마나 지켜봤을까', unit: '회', color: '#10B981' },
+      { key: 'newBuyFullSell', label: '신규매수/전량매도', unit: '명', color: '#3B82F6' },
+      { key: 'whereFromTo', label: '어디서 오고 갈까', unit: '%', color: '#10B981' },
+      { key: 'investorComposition', label: '개인투자자 구성', unit: '%', color: '#8B5CF6' },
+      { key: 'totalInvestors', label: '총 투자자', unit: '명', color: '#3B82F6' },
+      { key: 'avgReturnRate', label: '평균 수익률', unit: '%', color: '#10B981' },
+      { key: 'avgHoldQuantity', label: '평균 보유수량', unit: '주', color: '#8B5CF6' },
+      { key: 'totalHoldQuantity', label: '총 보유수량', unit: '주', color: '#EC4899' }
+    ];
+
+    let selectedMetric = 'avgReturnRate';
+    let selectedPeriod = '1Y';
+    let activeIndex = dataset.length - 1;
+    let isPlaying = false;
+    let playInterval = null;
+    let playSpeed = 1200;
+    let isSectorModalOpen = false;
+    let activeSectorStockId = 'samsung';
+
+    // Elements
+    const mStockPrice = document.getElementById('m-stock-price');
+    const mStockChange = document.getElementById('m-stock-change');
+    const mStockPercent = document.getElementById('m-stock-percent');
+
+    const chartTitle = document.getElementById('chart-title');
+    const chartRange = document.getElementById('chart-date-range');
+    const chartViewport = document.getElementById('chart-viewport');
+
+    const ctrlActiveDate = document.getElementById('ctrl-active-date');
+    const playPauseBtn = document.getElementById('btn-play-pause');
+    const resetBtn = document.getElementById('btn-reset');
+    const playSpeedSelect = document.getElementById('select-speed');
+    const scrubberInput = document.getElementById('timeline-scrubber');
+    const lbStart = document.getElementById('label-start-date');
+    const lbEnd = document.getElementById('label-end-date');
+
+    // Helper: format data values
+    function formatValue(value, key) {
+      switch(key) {
+        case 'totalInvestors': return `${Math.round(value).toLocaleString()}명`;
+        case 'avgReturnRate': return `${value.toFixed(2)}%`;
+        case 'avgPurchasePrice': return `${Math.round(value).toLocaleString()}원`;
+        case 'avgHoldQuantity': return `${value.toLocaleString()}주`;
+        case 'totalHoldQuantity': return `${Math.round(value).toLocaleString()}주`;
+        case 'whoBoughtSold': {
+          const activeData = dataset[activeIndex];
+          const baseVal = activeData.totalInvestors * 0.15;
+          const buy = Math.round(baseVal * 3.5);
+          const sell = Math.round(baseVal * 3.2);
+          const net = buy - sell;
+          return `개인 +${net.toLocaleString()}억`;
+        }
+        case 'watchCounts': {
+          const activeData = dataset[activeIndex];
+          const viewsCount = Math.round(activeData.totalInvestors * 3.4);
+          return `${viewsCount.toLocaleString()}회`;
+        }
+        case 'newBuyFullSell': {
+          const activeData = dataset[activeIndex];
+          const buyCount = Math.round(activeData.totalInvestors * 0.08);
+          return `신규 ${buyCount.toLocaleString()}명`;
+        }
+        case 'whereFromTo': return '하이닉스 20.5%';
+        case 'investorComposition': return '자산 1억+ 14.5%';
+        default: return value && value.toFixed ? value.toFixed(1) : (value || 0).toLocaleString();
+      }
+    }
+
+    // Dynamic Filtered Data by Period
+    function getFilteredData() {
+      if (selectedPeriod === '1D') return [dataset[activeIndex]];
+      
+      let sliceCount = 0;
+      if (selectedPeriod === '1M') sliceCount = 20;
+      else if (selectedPeriod === '3M') sliceCount = 60;
+      else if (selectedPeriod === '6M') sliceCount = 120;
+      else sliceCount = dataset.length; // 1Y
+
+      const activeDatePart = dataset.slice(0, activeIndex + 1);
+      if (activeDatePart.length < 2 && dataset.length >= 2) {
+        return dataset.slice(0, 2);
+      }
+      if (activeDatePart.length > sliceCount) {
+        return activeDatePart.slice(activeDatePart.length - sliceCount);
+      }
+      return activeDatePart;
+    }
+
+    // Refresh layout views
+    let activeWatchTab = 'views';
+    let activeTradeTab = 'buy';
+    let activeWhereTab = 'day';
+    let activeGoTab = 'day';
+    let activeCompTab = 'age';
+    let activeCompCategory = 'under20s';
+
+    function updateNewBuyFullSellWidget() {
+      const activeData = dataset[activeIndex];
+      const filtered = getFilteredData();
+      
+      const globalIdx = dataset.indexOf(activeData);
+      const baseValCurrent = activeData.totalInvestors * 0.03;
+      const waveCurrent1 = Math.sin(globalIdx * 0.42) * 4500;
+      const waveCurrent2 = Math.cos(globalIdx * 0.33) * 3000;
+      const currentBuy = Math.round(baseValCurrent * 0.7 + waveCurrent1 + 16000);
+      const currentSell = Math.round(baseValCurrent * 0.55 + waveCurrent2 + 11000);
+      
+      document.getElementById('new-buy-val').innerText = currentBuy.toLocaleString() + ' 명';
+      document.getElementById('full-sell-val').innerText = currentSell.toLocaleString() + ' 명';
+      
+      const svg = document.getElementById('new-buy-sell-chart-svg');
+      if (!svg) return;
+      
+      if (selectedPeriod === '1D') {
+        svg.innerHTML = `
+          <g transform="translate(0, 0)">
+            <text x="170" y="70" font-family="Inter, sans-serif" font-size="10" font-weight="900" fill="#475569" text-anchor="middle">1D 시계열 그래프 미지원</text>
+            <text x="170" y="88" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">1M 이상 기간 선택 시 추세선이 실시간 표출됩니다.</text>
+          </g>
+        `;
+        return;
+      }
+
+      if (!filtered || filtered.length < 2) {
+        svg.innerHTML = `<text x="170" y="80" font-size="10" font-weight="bold" fill="#94a3b8" text-anchor="middle">데이터가 충분하지 않습니다.</text>`;
+        return;
+      }
+      
+      const points = filtered.map((item) => {
+        const idx = dataset.indexOf(item);
+        const baseVal = item.totalInvestors * 0.03;
+        const wave1 = Math.sin(idx * 0.42) * 4500;
+        const wave2 = Math.cos(idx * 0.33) * 3000;
+        const buy = Math.round(baseVal * 0.7 + wave1 + 16000);
+        const sell = Math.round(baseVal * 0.55 + wave2 + 11000);
+        return { buy, sell: -sell };
+      });
+      
+      const minVal = -30000;
+      const maxVal = 40000;
+      const range = maxVal - minVal;
+      
+      const width = 340;
+      const height = 160;
+      const paddingX = 10;
+      const chartW = width - paddingX * 2;
+      const barW = Math.max(2, Math.floor(chartW / filtered.length) - 2);
+      
+      let elementsHTML = `
+        <line x1="10" y1="20" x2="330" y2="20" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="52" x2="330" y2="52" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="84" x2="330" y2="84" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="116" x2="330" y2="116" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="148" x2="330" y2="148" stroke="#f1f5f9" stroke-width="0.8" />
+      `;
+      
+      const yZero = height - (((0 - minVal) / range) * height);
+      elementsHTML += `<line x1="10" y1="${yZero}" x2="330" y2="${yZero}" stroke="#94a3b8" stroke-width="1" />`;
+      
+      filtered.forEach((item, index) => {
+        const pt = points[index];
+        const x = paddingX + (index / (filtered.length - 1)) * (chartW - barW);
+        const yBuy = height - (((pt.buy - minVal) / range) * height);
+        const hBuy = Math.abs(yZero - yBuy);
+        const ySell = height - (((pt.sell - minVal) / range) * height);
+        const hSell = Math.abs(yZero - ySell);
+        const isCurrent = (item === activeData);
+        const opacityBuy = isCurrent ? 1.0 : 0.65;
+        const opacitySell = isCurrent ? 1.0 : 0.65;
+        
+        elementsHTML += `
+          <rect x="${x}" y="${yBuy}" width="${barW}" height="${hBuy}" fill="#F87171" rx="1.5" fill-opacity="${opacityBuy}" />
+          <rect x="${x}" y="${yZero}" width="${barW}" height="${hSell}" fill="#38BDF8" rx="1.5" fill-opacity="${opacitySell}" />
+        `;
+      });
+      
+      svg.innerHTML = elementsHTML;
+    }
+
+    function updateWhereDidTheyComeFromWidget() {
+      const activeData = dataset[activeIndex];
+      const dateEl = document.getElementById('where-widget-date');
+      if (dateEl) dateEl.innerText = activeData.date + ' 기준';
+      
+      const tabData = {
+        day: [
+          { name: 'SK하이닉스', val: 20.51 },
+          { name: '삼성전기', val: 10.08 },
+          { name: 'LG전자', val: 4.27 },
+          { name: 'LG이노텍', val: 3.64 },
+          { name: '삼성SDI', val: 2.97 }
+        ],
+        week: [
+          { name: 'SK하이닉스', val: 18.42 },
+          { name: '현대차', val: 9.15 },
+          { name: '신성델타테크', val: 5.23 },
+          { name: '카카오', val: 4.11 },
+          { name: '셀트리온', val: 3.50 }
+        ],
+        monthLow: [
+          { name: 'SK하이닉스', val: 22.90 },
+          { name: '삼성SDI', val: 11.20 },
+          { name: '에코프로', val: 7.85 },
+          { name: '포스코홀딩스', val: 5.40 },
+          { name: 'NAVER', val: 4.12 }
+        ],
+        threeMonthsLow: [
+          { name: 'SK하이닉스', val: 25.10 },
+          { name: 'HD현대', val: 12.30 },
+          { name: 'LG화학', val: 8.40 },
+          { name: '한화솔루션', val: 6.10 },
+          { name: '기아', val: 5.20 }
+        ]
+      };
+      
+      const listData = tabData[activeWhereTab] || tabData.day;
+      const listContainer = document.getElementById('where-list-container');
+      
+      if (listContainer) {
+        let htmlStr = '';
+        listData.forEach(item => {
+          const barWidth = Math.min(100, (item.val / 30) * 100);
+          htmlStr += `
+            <div class="flex items-center justify-between text-[11px] font-bold">
+              <span class="w-20 text-right pr-2.5 text-slate-700 truncate">${item.name}</span>
+              <div class="flex-grow h-3.5 bg-slate-50 rounded-md overflow-hidden relative">
+                <div class="h-full bg-[#86EFAC] rounded-r-md transition-all duration-550" style="width: ${barWidth}%"></div>
+              </div>
+              <span class="w-16 text-left pl-2.5 font-mono text-slate-500 text-[10.5px]">${item.val}%</span>
+            </div>
+          `;
+        });
+        listContainer.innerHTML = htmlStr;
+      }
+      
+      const tabs = ['day', 'week', 'monthLow', 'threeMonthsLow'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('where-btn-' + t);
+        if (btn) {
+          if (t === activeWhereTab) {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-slate-900 border-slate-900 text-white font-black shadow-xs";
+          } else {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-white border-slate-200 text-slate-500 hover:bg-slate-50";
+          }
+        }
+      });
+    }
+
+    function updateWhereDidTheyGoWidget() {
+      const activeData = dataset[activeIndex];
+      const dateEl = document.getElementById('go-widget-date');
+      if (dateEl) dateEl.innerText = activeData.date + ' 기준';
+      
+      const tabData = {
+        day: [
+          { name: 'SK하이닉스', val: 15.10 },
+          { name: 'HD현대', val: 9.61 },
+          { name: '현대차', val: 7.27 },
+          { name: '두산에너빌리티', val: 3.13 },
+          { name: '삼성전기', val: 2.86 }
+        ],
+        week: [
+          { name: 'SK하이닉스', val: 14.80 },
+          { name: '현대차', val: 8.50 },
+          { name: '기아', val: 6.90 },
+          { name: '에코프로비엠', val: 4.15 },
+          { name: '카카오뱅크', val: 3.10 }
+        ],
+        monthHigh: [
+          { name: 'SK하이닉스', val: 19.30 },
+          { name: '삼성SDI', val: 10.40 },
+          { name: 'HD현대일렉트릭', val: 8.10 },
+          { name: '알테오젠', val: 5.25 },
+          { name: 'HLB', val: 4.10 }
+        ],
+        threeMonthsHigh: [
+          { name: 'SK하이닉스', val: 21.40 },
+          { name: 'HD현대중공업', val: 11.55 },
+          { name: '현대차', val: 9.80 },
+          { name: 'NAVER', val: 6.50 },
+          { name: 'SK이노베이션', val: 4.80 }
+        ]
+      };
+      
+      const listData = tabData[activeGoTab] || tabData.day;
+      const listContainer = document.getElementById('go-list-container');
+      
+      if (listContainer) {
+        let htmlStr = '';
+        listData.forEach(item => {
+          const barWidth = Math.min(100, (item.val / 30) * 100);
+          htmlStr += `
+            <div class="flex items-center justify-between text-[11px] font-bold">
+              <span class="w-20 text-right pr-2.5 text-slate-700 truncate">${item.name}</span>
+              <div class="flex-grow h-3.5 bg-slate-50 rounded-md overflow-hidden relative">
+                <div class="h-full bg-[#FED7AA] rounded-r-md transition-all duration-550" style="width: ${barWidth}%"></div>
+              </div>
+              <span class="w-16 text-left pl-2.5 font-mono text-slate-500 text-[10.5px]">${item.val}%</span>
+            </div>
+          `;
+        });
+        listContainer.innerHTML = htmlStr;
+      }
+      
+      const tabs = ['day', 'week', 'monthHigh', 'threeMonthsHigh'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('go-btn-' + t);
+        if (btn) {
+          if (t === activeGoTab) {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-slate-900 border-slate-900 text-white font-black shadow-xs";
+          } else {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-white border-slate-200 text-slate-500 hover:bg-slate-50";
+          }
+        }
+      });
+    }
+
+    const compDataConfig = {
+      asset: {
+        slices: [
+          { key: 'under30m', label: '3000만원 미만', val: 55.62, color: '#22C55E' },
+          { key: 'under100m', label: '1억 미만', val: 25.85, color: '#1E293B' },
+          { key: 'under1b', label: '10억 미만', val: 17.40, color: '#475569' },
+          { key: 'over1b', label: '10억 이상', val: 1.13, color: '#3730A3' }
+        ],
+        stocks: {
+          under30m: [
+            { name: 'SK하이닉스', count: '95,386 명' },
+            { name: '현대차', count: '60,383 명' },
+            { name: '카카오', count: '51,845 명' }
+          ],
+          under100m: [
+            { name: 'SK하이닉스', count: '42,105 명' },
+            { name: '현대차', count: '25,431 명' },
+            { name: '기아', count: '19,804 명' }
+          ],
+          under1b: [
+            { name: 'SK하이닉스', count: '12,305 명' },
+            { name: '현대차', count: '8,432 명' },
+            { name: '삼성생명', count: '5,612 명' }
+          ],
+          over1b: [
+            { name: 'SK하이닉스', count: '1,294 명' },
+            { name: 'HD현대중공업', count: '890 명' },
+            { name: 'NAVER', count: '754 명' }
+          ]
+        }
+      },
+      skill: {
+        slices: [
+          { key: 'pro', label: '투자고수', val: 6.79, color: '#22C55E' },
+          { key: 'normal', label: '일반투자자', val: 93.21, color: '#1E293B' }
+        ],
+        stocks: {
+          pro: [
+            { name: 'SK하이닉스', count: '42,002 명' },
+            { name: '현대차', count: '11,636 명' },
+            { name: '삼성전기', count: '8,720 명' }
+          ],
+          normal: [
+            { name: 'SK하이닉스', count: '154,231 명' },
+            { name: '현대차', count: '98,104 명' },
+            { name: '카카오', count: '76,432 명' }
+          ]
+        }
+      },
+      age: {
+        slices: [
+          { key: 'under20s', label: '20대 이하', val: 13.93, color: '#22C55E' },
+          { key: '30s', label: '30대', val: 18.91, color: '#1E293B' },
+          { key: '40s', label: '40대', val: 21.02, color: '#475569' },
+          { key: '50s', label: '50대', val: 25.67, color: '#3730A3' },
+          { key: 'over60s', label: '60대 이상', val: 20.47, color: '#86EFAC' }
+        ],
+        stocks: {
+          under20s: [
+            { name: 'SK하이닉스', count: '28,089 명' },
+            { name: '현대차', count: '16,808 명' },
+            { name: 'TIGER 미국S&P500', count: '13,719 명' }
+          ],
+          '30s': [
+            { name: 'SK하이닉스', count: '45,120 명' },
+            { name: 'NAVER', count: '22,143 명' },
+            { name: '카카오', count: '19,850 명' }
+          ],
+          '40s': [
+            { name: 'SK하이닉스', count: '68,430 명' },
+            { name: '현대차', count: '41,205 명' },
+            { name: '삼성SDI', count: '32,154 명' }
+          ],
+          '50s': [
+            { name: 'SK하이닉스', count: '89,402 명' },
+            { name: 'HD현대중공업', count: '54,321 명' },
+            { name: '삼성전기', count: '41,290 명' }
+          ],
+          over60s: [
+            { name: 'SK하이닉스', count: '52,190 명' },
+            { name: '현대차', count: '38,402 명' },
+            { name: '한국전력', count: '29,431 명' }
+          ]
+        }
+      }
+    };
+
+    function updateRetailInvestorCompositionWidget() {
+      const activeData = dataset[activeIndex];
+      const dateEl = document.getElementById('comp-widget-date');
+      if (dateEl) dateEl.innerText = activeData.date + ' 기준';
+
+      const tabConf = compDataConfig[activeCompTab];
+      const slices = tabConf.slices;
+      const stocks = tabConf.stocks[activeCompCategory] || tabConf.stocks[Object.keys(tabConf.stocks)[0]];
+
+      // Update Tab Button Styles
+      const tabsList = ['asset', 'skill', 'age'];
+      tabsList.forEach(t => {
+        const btn = document.getElementById('comp-tab-btn-' + t);
+        if (btn) {
+          if (t === activeCompTab) {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-slate-900 border-slate-900 text-white font-black shadow-xs";
+          } else {
+            btn.className = "py-1.5 px-3 text-[10px] font-extrabold rounded-full border transition-all bg-white border-slate-200 text-slate-500 hover:bg-slate-50";
+          }
+        }
+      });
+
+      // Update Select Dropdown options
+      const selectEl = document.getElementById('comp-sub-select');
+      if (selectEl) {
+        let optionsHtml = '';
+        slices.forEach(s => {
+          const isSelected = s.key === activeCompCategory ? 'selected' : '';
+          optionsHtml += `<option value="${s.key}" ${isSelected} class="font-bold text-slate-700 text-xs">${s.label}</option>`;
+        });
+        selectEl.innerHTML = optionsHtml;
+      }
+
+      // Render Pie/Donut Chart SVG paths
+      const pieSvg = document.getElementById('comp-pie-svg');
+      if (pieSvg) {
+        let pathHtml = '';
+        const cx = 90;
+        const cy = 90;
+        const r = 80;
+        let accumulatedPercent = 0;
+
+        slices.forEach(slice => {
+          const percentage = slice.val;
+          const startAngle = -Math.PI / 2 + (2 * Math.PI * accumulatedPercent) / 100;
+          accumulatedPercent += percentage;
+          const endAngle = -Math.PI / 2 + (2 * Math.PI * accumulatedPercent) / 100;
+
+          const x1 = cx + r * Math.cos(startAngle);
+          const y1 = cy + r * Math.sin(startAngle);
+          const x2 = cx + r * Math.cos(endAngle);
+          const y2 = cy + r * Math.sin(endAngle);
+
+          const largeArcFlag = percentage > 50 ? 1 : 0;
+          const pathData = percentage === 100
+            ? `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx - 0.01} ${cy - r} Z`
+            : `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+
+          const midAngle = (startAngle + endAngle) / 2;
+          const rText = r * 0.58;
+          const tx = cx + rText * Math.cos(midAngle);
+          const ty = cy + rText * Math.sin(midAngle);
+
+          const isSelected = slice.key === activeCompCategory;
+          const strokeWidth = isSelected ? 3.5 : 1;
+          const scale = isSelected ? 'scale(1.05)' : 'scale(1)';
+          const filter = isSelected ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' : 'none';
+
+          pathHtml += `
+            <g class="cursor-pointer" onclick="selectCompCategory('${slice.key}')">
+              <path
+                d="${pathData}"
+                fill="${slice.color}"
+                stroke="#FFFFFF"
+                stroke-width="${strokeWidth}"
+                style="transform-origin: 90px 90px; transform: ${scale}; filter: ${filter}; transition: all 0.3s;"
+              />
+              ${percentage >= 3 ? `
+              <text
+                x="${tx}"
+                y="${ty}"
+                fill="#FFFFFF"
+                style="font-size: 9.5px; font-weight: 900; text-anchor: middle; dominant-baseline: middle; text-shadow: 0px 1px 2px rgba(0,0,0,0.4); pointer-events: none;"
+              >
+                ${percentage}%
+              </text>` : ''}
+            </g>
+          `;
+        });
+        pieSvg.innerHTML = pathHtml;
+      }
+
+      // Render legend panel list
+      const legendContainer = document.getElementById('comp-legend-container');
+      if (legendContainer) {
+        let legendHtml = '';
+        slices.forEach(slice => {
+          const isSelected = slice.key === activeCompCategory;
+          legendHtml += `
+            <div 
+              onclick="selectCompCategory('${slice.key}')"
+              class="flex items-center gap-2 cursor-pointer py-1 px-1.5 rounded-lg transition-all ${
+                isSelected ? 'bg-slate-50 font-black scale-[1.03]' : 'opacity-85 hover:opacity-100'
+              }"
+            >
+              <span 
+                class="w-3 h-2.5 rounded-sm inline-block transition-transform duration-200" 
+                style="background-color: ${slice.color}; ${isSelected ? 'transform: scale(1.1);' : ''}"
+              ></span>
+              <span class="text-[10.5px] text-slate-700 leading-none truncate">${slice.label}</span>
+            </div>
+          `;
+        });
+        legendContainer.innerHTML = legendHtml;
+      }
+
+      // Render other held stocks horizontal list
+      const stocksList = document.getElementById('comp-stocks-list');
+      if (stocksList) {
+        let stocksHtml = '';
+        stocks.forEach(stock => {
+          stocksHtml += `
+            <div class="bg-white border border-slate-110 rounded-xl py-3 px-2 flex flex-col items-center justify-center text-center shadow-3xs min-w-[100px] flex-1 hover:border-slate-300 transition-colors">
+              <span class="text-[11px] font-extrabold text-slate-800 leading-tight tracking-tight mb-2 truncate max-w-[90px]">${stock.name}</span>
+              <span class="text-[10px] font-black text-slate-400 font-mono">${stock.count}</span>
+            </div>
+          `;
+        });
+        stocksList.innerHTML = stocksHtml;
+      }
+    }
+
+    window.selectCompCategory = function(key) {
+      activeCompCategory = key;
+      updateRetailInvestorCompositionWidget();
+    };
+
+    window.selectCompTab = function(targetTab) {
+      activeCompTab = targetTab;
+      if (targetTab === 'asset') {
+        activeCompCategory = 'under30m';
+      } else if (targetTab === 'skill') {
+         activeCompCategory = 'pro';
+      } else {
+         activeCompCategory = 'under20s';
+      }
+      updateRetailInvestorCompositionWidget();
+    };
+
+    // Bind Button Events for Where & Go widgets
+    setTimeout(() => {
+      ['day', 'week', 'monthLow', 'threeMonthsLow'].forEach(t => {
+        const btn = document.getElementById('where-btn-' + t);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            activeWhereTab = t;
+            updateWhereDidTheyComeFromWidget();
+          });
+        }
+      });
+      ['day', 'week', 'monthHigh', 'threeMonthsHigh'].forEach(t => {
+        const btn = document.getElementById('go-btn-' + t);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            activeGoTab = t;
+            updateWhereDidTheyGoWidget();
+          });
+        }
+      });
+
+      // Bind Retail Investor Tabs
+      ['asset', 'skill', 'age'].forEach(tab => {
+        const btn = document.getElementById('comp-tab-btn-' + tab);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            selectCompTab(tab);
+          });
+        }
+      });
+
+      // Bind dropdown selection
+      const selectEl = document.getElementById('comp-sub-select');
+      if (selectEl) {
+        selectEl.addEventListener('change', (e) => {
+          selectCompCategory(e.target.value);
+        });
+      }
+    }, 50);
+
+    function updateTradeMetrics() {
+      const activeData = dataset[activeIndex];
+      const baseVal = activeData.totalInvestors * 0.15;
+      
+      const buyIndividual = Math.round(baseVal * (3.5 + Math.sin(activeIndex * 0.45) * 1.5 + (activeIndex % 4) * 0.5));
+      const buyInstitution = Math.round(baseVal * (2.0 + Math.cos(activeIndex * 0.6) * 1.0 + (activeIndex % 3) * 0.6));
+      const buyForeigner = Math.round(baseVal * (2.8 + Math.sin(activeIndex * 0.7) * 1.8 + (activeIndex % 5) * 0.4));
+
+      const sellIndividual = Math.round(baseVal * (3.2 + Math.cos(activeIndex * 0.5) * 1.2 + (activeIndex % 5) * 0.4));
+      const sellInstitution = Math.round(baseVal * (2.2 + Math.sin(activeIndex * 0.55) * 1.1 + (activeIndex % 4) * 0.5));
+      const sellForeigner = Math.round(baseVal * (3.0 + Math.cos(activeIndex * 0.75) * 1.5 + (activeIndex % 3) * 0.8));
+
+      const isBuy = activeTradeTab === 'buy';
+      const isSell = activeTradeTab === 'sell';
+      const isNet = activeTradeTab === 'net';
+      
+      const labelText = isBuy ? '매수' : (isSell ? '매도' : '순매수');
+
+      document.getElementById('trade-label-individual').innerText = '개인 ' + labelText;
+      document.getElementById('trade-label-institution').innerText = '기관 ' + labelText;
+      document.getElementById('trade-label-foreigner').innerText = '외국인 ' + labelText;
+
+      let valInd, valInst, valFor;
+      if (isBuy) {
+        valInd = buyIndividual;
+        valInst = buyInstitution;
+        valFor = buyForeigner;
+      } else if (isSell) {
+        valInd = sellIndividual;
+        valInst = sellInstitution;
+        valFor = sellForeigner;
+      } else {
+        valInd = buyIndividual - sellIndividual;
+        valInst = buyInstitution - sellInstitution;
+        valFor = buyForeigner - sellForeigner;
+      }
+
+      const formatVal = (v) => {
+        return (isNet && v > 0 ? '+' : '') + v.toLocaleString() + '억';
+      };
+
+      document.getElementById('trade-val-individual').innerText = formatVal(valInd);
+      document.getElementById('trade-val-institution').innerText = formatVal(valInst);
+      document.getElementById('trade-val-foreigner').innerText = formatVal(valFor);
+
+      const setBadgeColor = (elem, val, defaultColor) => {
+        if (!isNet) {
+          elem.className = "text-xs font-extrabold font-mono " + defaultColor;
+        } else {
+          if (val >= 0) {
+            elem.className = "text-xs font-extrabold font-mono text-rose-500";
+          } else {
+            elem.className = "text-xs font-extrabold font-mono text-blue-500";
+          }
+        }
+      };
+
+      setBadgeColor(document.getElementById('trade-val-individual'), valInd, 'text-[#EE5A24]');
+      setBadgeColor(document.getElementById('trade-val-institution'), valInst, 'text-[#06B6D4]');
+      setBadgeColor(document.getElementById('trade-val-foreigner'), valFor, 'text-[#3B82F6]');
+
+      renderTradeChart();
+    }
+
+    function renderTradeChart() {
+      const svg = document.getElementById('trade-chart-svg');
+      if (!svg) return;
+
+      if (selectedPeriod === '1D') {
+        svg.innerHTML = `
+          <g transform="translate(0, 0)">
+            <text x="170" y="45" font-family="Inter, sans-serif" font-size="10" font-weight="900" fill="#475569" text-anchor="middle">1D 시계열 그래프 미지원</text>
+            <text x="170" y="62" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">1M 이상 기간 선택 시 추세선이 실시간 표출됩니다.</text>
+          </g>
+        `;
+        return;
+      }
+
+      const filtered = getFilteredData();
+      if (!filtered || filtered.length < 2) {
+        svg.innerHTML = `
+          <g transform="translate(0, 0)">
+            <text x="170" y="55" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">데이터가 충분하지 않습니다.</text>
+          </g>
+        `;
+        return;
+      }
+
+      const tradePoints = filtered.map((item) => {
+        const globalIdx = dataset.indexOf(item);
+        const baseVal = item.totalInvestors * 0.15;
+        
+        const buyIndividual = Math.round(baseVal * (3.5 + Math.sin(globalIdx * 0.45) * 1.5 + (globalIdx % 4) * 0.5));
+        const buyInstitution = Math.round(baseVal * (2.0 + Math.cos(globalIdx * 0.6) * 1.0 + (globalIdx % 3) * 0.6));
+        const buyForeigner = Math.round(baseVal * (2.8 + Math.sin(globalIdx * 0.7) * 1.8 + (globalIdx % 5) * 0.4));
+
+        const sellIndividual = Math.round(baseVal * (3.2 + Math.cos(globalIdx * 0.5) * 1.2 + (globalIdx % 5) * 0.4));
+        const sellInstitution = Math.round(baseVal * (2.2 + Math.sin(globalIdx * 0.55) * 1.1 + (globalIdx % 4) * 0.5));
+        const sellForeigner = Math.round(baseVal * (3.0 + Math.cos(globalIdx * 0.75) * 1.5 + (globalIdx % 3) * 0.8));
+
+        return {
+          buyIndividual,
+          buyInstitution,
+          buyForeigner,
+          sellIndividual,
+          sellInstitution,
+          sellForeigner,
+          netIndividual: buyIndividual - sellIndividual,
+          netInstitution: buyInstitution - sellInstitution,
+          netForeigner: buyForeigner - sellForeigner
+        };
+      });
+
+      const isBuy = activeTradeTab === 'buy';
+      const isSell = activeTradeTab === 'sell';
+      const isNet = activeTradeTab === 'net';
+      
+      let keyInd, keyInst, keyFor;
+      if (isBuy) {
+        keyInd = 'buyIndividual';
+        keyInst = 'buyInstitution';
+        keyFor = 'buyForeigner';
+      } else if (isSell) {
+        keyInd = 'sellIndividual';
+        keyInst = 'sellInstitution';
+        keyFor = 'sellForeigner';
+      } else {
+        keyInd = 'netIndividual';
+        keyInst = 'netInstitution';
+        keyFor = 'netForeigner';
+      }
+
+      const indVals = tradePoints.map(p => p[keyInd]);
+      const instVals = tradePoints.map(p => p[keyInst]);
+      const forVals = tradePoints.map(p => p[keyFor]);
+
+      const allVals = [...indVals, ...instVals, ...forVals];
+      const minVal = Math.min(...allVals);
+      const maxVal = Math.max(...allVals);
+      const range = maxVal - minVal || 1;
+
+      const paddingX = 10;
+      const paddingY = 8;
+      const chartW = 340 - (paddingX * 2);
+      const chartH = 100 - (paddingY * 2);
+
+      const pointsInd = [];
+      const pointsInst = [];
+      const pointsFor = [];
+
+      filtered.forEach((item, index) => {
+        const x = paddingX + (index / (filtered.length - 1)) * chartW;
+        
+        const pt = tradePoints[index];
+        const yInd = paddingY + chartH - (((pt[keyInd] - minVal) / range) * chartH);
+        const yInst = paddingY + chartH - (((pt[keyInst] - minVal) / range) * chartH);
+        const yFor = paddingY + chartH - (((pt[keyFor] - minVal) / range) * chartH);
+
+        pointsInd.push({ x, y: yInd });
+        pointsInst.push({ x, y: yInst });
+        pointsFor.push({ x, y: yFor });
+      });
+
+      const buildPathD = (pts) => {
+        if (pts.length === 0) return '';
+        let d = `M ${pts[0].x} ${pts[0].y}`;
+        for (let i = 1; i < pts.length; i++) {
+          d += ` L ${pts[i].x} ${pts[i].y}`;
+        }
+        return d;
+      };
+
+      const pathInd = buildPathD(pointsInd);
+      const pathInst = buildPathD(pointsInst);
+      const pathFor = buildPathD(pointsFor);
+
+      let zeroLineHTML = '';
+      if (minVal < 0 && maxVal > 0) {
+        const zeroY = paddingY + chartH - (((0 - minVal) / range) * chartH);
+        zeroLineHTML = `<line x1="8" y1="${zeroY}" x2="332" y2="${zeroY}" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2" />`;
+      }
+
+      let gridHTML = `
+        <line x1="8" y1="15" x2="332" y2="15" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="8" y1="50" x2="332" y2="50" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="8" y1="85" x2="332" y2="85" stroke="#f1f5f9" stroke-width="0.8" />
+        ${zeroLineHTML}
+      `;
+
+      const lastIdx = pointsInd.length - 1;
+      
+      svg.innerHTML = `
+        ${gridHTML}
+        <!-- Individual Line (#EE5A24) -->
+        <path d="${pathInd}" fill="none" stroke="#EE5A24" stroke-width="1.8" stroke-linecap="round" />
+        <!-- Institution Line (#06B6D4) -->
+        <path d="${pathInst}" fill="none" stroke="#06B6D4" stroke-width="1.8" stroke-linecap="round" />
+        <!-- Foreigner Line (#3B82F6) -->
+        <path d="${pathFor}" fill="none" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round" />
+
+        <!-- Live pointer on active ending points -->
+        <circle cx="${pointsInd[lastIdx].x}" cy="${pointsInd[lastIdx].y}" r="3.5" fill="#EE5A24" stroke="#fff" stroke-width="1.5" />
+        <circle cx="${pointsInst[lastIdx].x}" cy="${pointsInst[lastIdx].y}" r="3.5" fill="#06B6D4" stroke="#fff" stroke-width="1.5" />
+        <circle cx="${pointsFor[lastIdx].x}" cy="${pointsFor[lastIdx].y}" r="3.5" fill="#3B82F6" stroke="#fff" stroke-width="1.5" />
+      `;
+    }
+
+    function renderWatchChart() {
+      const svg = document.getElementById('watch-chart-svg');
+      if (!svg) return;
+
+      if (selectedPeriod === '1D') {
+        svg.innerHTML = `
+          <g transform="translate(0, 0)">
+            <text x="170" y="70" font-family="Inter, sans-serif" font-size="10" font-weight="900" fill="#475569" text-anchor="middle">1D 시계열 그래프 미지원</text>
+            <text x="170" y="88" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">1M 이상 기간 선택 시 추세선이 실시간 표출됩니다.</text>
+          </g>
+        `;
+        return;
+      }
+
+      const filtered = getFilteredData();
+      if (!filtered || filtered.length < 2) {
+        svg.innerHTML = `
+          <g transform="translate(0, 0)">
+            <text x="170" y="80" font-family="Inter, sans-serif" font-size="10" font-weight="900" fill="#475569" text-anchor="middle">데이터가 충분하지 않습니다.</text>
+          </g>
+        `;
+        return;
+      }
+
+      // Generate watchData
+      const chartPoints = filtered.map((item) => {
+        const globalIdx = dataset.indexOf(item);
+        const multipliers = [
+          5.0, 4.2, 5.2, 4.0, 4.8, 3.2, 3.8, 4.5, 4.0, 3.5,
+          5.3, 5.3, 4.3, 5.1, 6.6, 4.4, 4.2, 4.0, 4.1, 4.3
+        ];
+        const mult = multipliers[globalIdx % multipliers.length] || 4.5;
+        return {
+          views: Math.round(item.totalInvestors * mult),
+          watchlist: Math.round(item.totalInvestors * mult * 0.12)
+        };
+      });
+
+      const isViews = activeWatchTab === 'views';
+      const activeKey = isViews ? 'views' : 'watchlist';
+
+      // Statistics for each point
+      const pointsData = chartPoints.map((item, index) => {
+        const subset = chartPoints.slice(0, index + 1);
+        const values = subset.map(d => d[activeKey]);
+        const sum = values.reduce((acc, val) => acc + val, 0);
+        const avg = Math.round(sum / values.length) || 0;
+
+        const sortedValues = [...values].sort((a, b) => a - b);
+        const mid = Math.floor(sortedValues.length / 2);
+        const median = sortedValues.length % 2 !== 0
+          ? sortedValues[mid]
+          : Math.round((sortedValues[mid - 1] + sortedValues[mid]) / 2);
+
+        return {
+          value: item[activeKey],
+          avgValue: avg,
+          medianValue: median
+        };
+      });
+
+      // Find min and max for scaling
+      const allVals = pointsData.flatMap(p => [p.value, p.avgValue, p.medianValue]);
+      const minVal = Math.min(...allVals);
+      const maxVal = Math.max(...allVals);
+      const range = maxVal - minVal || 1;
+
+      const paddingX = 10;
+      const paddingY = 8;
+      const chartW = 340 - (paddingX * 2);
+      const chartH = 160 - (paddingY * 2);
+
+      const pointsMain = [];
+      const pointsAvg = [];
+      const pointsMed = [];
+
+      filtered.forEach((item, index) => {
+        const x = paddingX + (index / (filtered.length - 1)) * chartW;
+        const pt = pointsData[index];
+
+        const yMain = paddingY + chartH - (((pt.value - minVal) / range) * chartH);
+        const yAvg = paddingY + chartH - (((pt.avgValue - minVal) / range) * chartH);
+        const yMed = paddingY + chartH - (((pt.medianValue - minVal) / range) * chartH);
+
+        pointsMain.push({ x, y: yMain });
+        pointsAvg.push({ x, y: yAvg });
+        pointsMed.push({ x, y: yMed });
+      });
+
+      const buildPathD = (pts) => {
+        if (pts.length === 0) return '';
+        let d = `M ${pts[0].x} ${pts[0].y}`;
+        for (let i = 1; i < pts.length; i++) {
+          d += ` L ${pts[i].x} ${pts[i].y}`;
+        }
+        return d;
+      };
+
+      const pathMain = buildPathD(pointsMain);
+      const pathAvg = buildPathD(pointsAvg);
+      const pathMed = buildPathD(pointsMed);
+
+      let gridHTML = `
+        <line x1="10" y1="20" x2="330" y2="20" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="55" x2="330" y2="55" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="90" x2="330" y2="90" stroke="#f1f5f9" stroke-width="0.8" />
+        <line x1="10" y1="125" x2="330" y2="125" stroke="#f1f5f9" stroke-width="0.8" />
+      `;
+
+      const lastIdx = pointsMain.length - 1;
+      const strokeColor = isViews ? '#111111' : '#F59E0B';
+
+      svg.innerHTML = `
+        ${gridHTML}
+        <!-- Average Line (Purple #8B5CF6) -->
+        <path d="${pathAvg}" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="4,4" stroke-linecap="round" />
+        <!-- Median Line (Green #10B981) -->
+        <path d="${pathMed}" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,4" stroke-linecap="round" />
+        <!-- Main Line -->
+        <path d="${pathMain}" fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round" />
+
+        <!-- Live pointer on active ending main point -->
+        <circle cx="${pointsMain[lastIdx].x}" cy="${pointsMain[lastIdx].y}" r="3.5" fill="${strokeColor}" stroke="#fff" stroke-width="1.5" />
+      `;
+    }
+
+    function updateWatchMetrics() {
+      const activeData = dataset[activeIndex];
+      const viewsCount = Math.round(activeData.totalInvestors * 3.4);
+      const watchlistCount = Math.round(activeData.totalInvestors * 0.45);
+
+      if (activeWatchTab === 'views') {
+        document.getElementById('watch-metric-label').innerText = '해당 기간 총 조회수';
+        document.getElementById('watch-metric-value').innerText = viewsCount.toLocaleString() + ' 회';
+        document.getElementById('watch-metric-value').className = 'text-2xl font-black text-[#E53E3E] font-mono leading-none';
+        document.getElementById('watch-metric-subtext').innerHTML = '이웃 주주 동일종목 대비 <strong class="text-emerald-600">4.2배</strong> 활성 조회 중';
+        
+        const legendDot = document.getElementById('watch-chart-legend-dot');
+        const legendLabel = document.getElementById('watch-chart-legend-label');
+        if (legendDot) legendDot.className = 'w-1.5 h-1.5 rounded-full inline-block bg-[#111111]';
+        if (legendLabel) legendLabel.innerText = '조회건수';
+      } else {
+        document.getElementById('watch-metric-label').innerText = '관심등록을 수락한 NH 주주';
+        document.getElementById('watch-metric-value').innerText = watchlistCount.toLocaleString() + ' 명';
+        document.getElementById('watch-metric-value').className = 'text-2xl font-black text-amber-500 font-mono leading-none';
+        document.getElementById('watch-metric-subtext').innerHTML = '전주 주 거래계좌 관찰군 <strong class="text-rose-500">11.45%</strong> 증가세 반영';
+        
+        const legendDot = document.getElementById('watch-chart-legend-dot');
+        const legendLabel = document.getElementById('watch-chart-legend-label');
+        if (legendDot) legendDot.className = 'w-1.5 h-1.5 rounded-full inline-block bg-[#F59E0B]';
+        if (legendLabel) legendLabel.innerText = '관심종목';
+      }
+
+      renderWatchChart();
+    }
+
+    function updateUI() {
+      const activeData = dataset[activeIndex];
+
+      // Update timeline control labels
+      if (ctrlActiveDate) ctrlActiveDate.innerText = `20${activeData.date}`;
+      if (scrubberInput) scrubberInput.value = activeIndex;
+
+      // Mobile simulated ticker banner
+      mStockPrice.innerText = activeData.stockPrice.toLocaleString();
+      const changePrefix = activeData.stockChange >= 0 ? '▲' : '▼';
+      mStockChange.innerText = `${changePrefix} ${Math.abs(activeData.stockChange).toLocaleString()}`;
+      mStockChange.className = activeData.stockChange >= 0 ? 'text-white font-mono font-bold text-xs' : 'text-blue-100 opacity-90 font-mono font-bold text-xs';
+      mStockPercent.innerText = `${activeData.stockChange >= 0 ? '+' : ''}${activeData.stockPercent}%`;
+
+      // Draw horizontal cards
+      renderCards();
+
+      // Render line/area SVG chart
+      renderChart();
+
+      // Update dynamic dates on cards
+      const filteredForDates = getFilteredData();
+      const dateText = selectedPeriod === '1D' ? '당일 스냅샷' : `20${filteredForDates[0].date} ~ 20${filteredForDates[filteredForDates.length - 1].date}`;
+      const watchRangeEl = document.getElementById('watch-date-range');
+      if (watchRangeEl) watchRangeEl.innerText = dateText;
+      const tradeRangeEl = document.getElementById('trade-date-range');
+      if (tradeRangeEl) tradeRangeEl.innerText = dateText;
+      const newBuyRangeEl = document.getElementById('new-buy-date-range');
+      if (newBuyRangeEl) newBuyRangeEl.innerText = dateText;
+
+      // Setup dynamic body averages mapping matching App.tsx React logic
+      const lossRatio = activeData.lossInvestorRatio;
+      const stockPrice = activeData.stockPrice;
+
+      const headPrice = Math.round((stockPrice * 1.05837) / 10) * 10;
+      const shoulderPrice = Math.round((stockPrice * 0.91304) / 10) * 10;
+      const waistPrice = Math.round((stockPrice * 0.63731) / 10) * 10;
+      const kneePrice = Math.round((stockPrice * 0.28960) / 10) * 10;
+      const footPrice = Math.round((stockPrice * 0.22575) / 10) * 10;
+
+      const p1 = Math.round((lossRatio * 0.45 + 5.2) * 10) / 10;
+      const p2 = Math.round((lossRatio * 0.25 + 13.8) * 10) / 10;
+      const p3 = Math.round((70.5 - lossRatio * 0.5) * 10) / 10;
+      const p4 = parseFloat((100 - p1 - p2 - p3).toFixed(1));
+
+      // Update Dom values
+      document.getElementById('avg-body-date').innerText = activeData.date;
+      document.getElementById('val-body-head-price').innerText = headPrice.toLocaleString() + ' 원';
+      document.getElementById('val-body-shoulder-price').innerText = shoulderPrice.toLocaleString() + ' 원';
+      document.getElementById('val-body-waist-price').innerText = waistPrice.toLocaleString() + ' 원';
+      document.getElementById('val-body-knee-price').innerText = kneePrice.toLocaleString() + ' 원';
+      document.getElementById('val-body-foot-price').innerText = footPrice.toLocaleString() + ' 원';
+
+      document.getElementById('val-body-loss-ratio').innerText = lossRatio + '%';
+      document.getElementById('val-body-stock-price').innerText = stockPrice.toLocaleString() + ' 원';
+      document.getElementById('val-body-profit-ratio').innerText = (100 - lossRatio).toFixed(1) + '%';
+
+      // Update beautiful Gauge labels and widths dynamically
+      const mGProfit = (100 - lossRatio);
+      document.getElementById('gauge-loss-label').innerText = lossRatio + '%';
+      document.getElementById('gauge-profit-label').innerText = mGProfit.toFixed(1) + '%';
+      document.getElementById('gauge-loss-bar').style.width = lossRatio + '%';
+      document.getElementById('gauge-profit-bar').style.width = mGProfit + '%';
+
+      // Dynamic Segment Styling Helper Matching App.tsx React Logic for Premium Interaction
+      function updateHTMLSegmentStyle(idx, val) {
+        const zoneBg = document.getElementById('zone-bg-' + idx);
+        const badgeBox = document.getElementById('badge-box-' + idx);
+        const badgeBar = document.getElementById('badge-bar-' + idx);
+        const badgeBarBg = document.getElementById('badge-bar-bg-' + idx);
+        const badgeIcon = document.getElementById('badge-icon-' + idx);
+        const bracket = document.getElementById('bracket-' + idx);
+        const bracketTop = document.getElementById('bracket-top-' + idx);
+        const bracketBot = document.getElementById('bracket-bot-' + idx);
+        const valElem = document.getElementById('val-segment-' + idx);
+
+        if (!badgeBox) return;
+
+        // 1. Dynamic zone background opacity based on density
+        if (zoneBg) {
+          const colors = [
+            'rgb(245, 158, 11)',  // Amber for Head
+            'rgb(100, 116, 139)', // Slate for Shoulder
+            'rgb(99, 102, 241)',  // Indigo for Waist
+            'rgb(59, 130, 246)'   // Blue for Knee
+          ];
+          zoneBg.style.backgroundColor = colors[idx - 1];
+          zoneBg.style.opacity = (val / 100) * 0.28 + 0.015;
+        }
+
+        // 2. Clear old theme classes
+        badgeBox.className = "absolute top-1/2 left-0 -translate-y-1/2 rounded-md px-1 py-0.5 flex flex-col items-center gap-px font-mono text-[7.5px] font-bold leading-none min-w-[34px] transition-all duration-300";
+        if (badgeBarBg) badgeBarBg.className = "w-full h-[2px] rounded-full overflow-hidden mt-0.5";
+        if (badgeBar) badgeBar.className = "h-full rounded-full";
+
+        // Remove old classes and establish dynamic theme
+        let theme;
+        if (val >= 50) {
+          theme = {
+            bgClasses: "bg-red-500 text-white shadow-[0_2px_5px_rgba(239,68,68,0.3)]",
+            barBgClasses: "bg-red-700/50",
+            barClasses: "bg-white",
+            icon: "🔥",
+            bracketClass: "bg-red-500",
+            textClass: "text-white font-extrabold"
+          };
+        } else if (val >= 25) {
+          theme = {
+            bgClasses: "bg-amber-500 text-white shadow-[0_2px_5px_rgba(245,158,11,0.25)]",
+            barBgClasses: "bg-amber-700/50",
+            barClasses: "bg-white",
+            icon: "✨",
+            bracketClass: "bg-amber-500",
+            textClass: "text-white font-extrabold"
+          };
+        } else if (val >= 10) {
+          theme = {
+            bgClasses: "bg-indigo-100 border border-indigo-350 shadow-sm",
+            barBgClasses: "bg-indigo-200",
+            barClasses: "bg-indigo-600",
+            icon: "↕",
+            bracketClass: "bg-indigo-400",
+            textClass: "text-indigo-950 font-extrabold"
+          };
+        } else {
+          theme = {
+            bgClasses: "bg-slate-200 border border-slate-350 shadow-sm",
+            barBgClasses: "bg-slate-300",
+            barClasses: "bg-slate-500",
+            icon: "↕",
+            bracketClass: "bg-slate-400",
+            textClass: "text-slate-800 font-extrabold"
+          };
+        }
+
+        // Apply theme properties safely
+        theme.bgClasses.split(' ').forEach(c => c && badgeBox.classList.add(c));
+        if (badgeBarBg) {
+          theme.barBgClasses.split(' ').forEach(c => c && badgeBarBg.classList.add(c));
+        }
+        if (badgeBar) {
+          theme.barClasses.split(' ').forEach(c => c && badgeBar.classList.add(c));
+        }
+        
+        if (badgeIcon) badgeIcon.innerText = theme.icon;
+        
+        // Value Text update with color
+        if (valElem) {
+          valElem.innerText = val + "%";
+          valElem.className = theme.textClass;
+        }
+
+        // Bracket rendering with opacity and line styles
+        if (bracket) {
+          bracket.className = "absolute right-[4px] inset-y-0 w-[2px] opacity-60 rounded-full " + theme.bracketClass;
+        }
+        if (bracketTop) {
+          bracketTop.className = "absolute top-0 right-[4px] w-[14px] h-[1.5px] opacity-70 " + theme.bracketClass;
+        }
+        if (bracketBot) {
+          bracketBot.className = "absolute bottom-0 right-[4px] w-[14px] h-[1.5px] opacity-70 " + theme.bracketClass;
+        }
+
+        // Set dynamic gauge bar width
+        if (badgeBar) {
+          badgeBar.style.width = Math.min(val, 100) + '%';
+        }
+      }
+
+      updateHTMLSegmentStyle(1, p1);
+      updateHTMLSegmentStyle(2, p2);
+      updateHTMLSegmentStyle(3, p3);
+      updateHTMLSegmentStyle(4, p4);
+
+      // 모바일 복제 뷰 어노테이션(설명 주석) 실시간 연동
+      document.getElementById('annot-p1').innerText = p1 + '%';
+      document.getElementById('annot-p2').innerText = p2 + '%';
+
+      updateWatchMetrics();
+      updateTradeMetrics();
+      updateNewBuyFullSellWidget();
+      updateWhereDidTheyComeFromWidget();
+      updateWhereDidTheyGoWidget();
+      updateRetailInvestorCompositionWidget();
+
+      updateWidgetHighlights();
+
+      if (isSectorModalOpen) {
+        updateSectorComparisonModal();
+      }
+    }
+
+    function updateWidgetHighlights() {
+      const widgetKeys = [
+        'avgPurchasePrice',
+        'whoBoughtSold',
+        'watchCounts',
+        'newBuyFullSell',
+        'whereFromTo',
+        'investorComposition'
+      ];
+      widgetKeys.forEach(k => {
+        const el = document.getElementById(`widget-${k}`);
+        if (!el) return;
+        const isSelected = selectedMetric === k;
+        if (isSelected) {
+          el.className = "bg-white rounded-2xl p-4.5 space-y-4 shadow-sm select-none transition-all duration-300 border border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)] ring-4 ring-amber-100/50 scale-[1.01]";
+        } else {
+          el.className = "bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300";
+        }
+      });
+      // Also highlight the sister widget for whereFromTo
+      const goEl = document.getElementById('widget-whereDidTheyGo');
+      if (goEl) {
+        if (selectedMetric === 'whereFromTo') {
+          goEl.className = "bg-white rounded-2xl p-4.5 space-y-4 shadow-sm select-none transition-all duration-300 border border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)] ring-4 ring-amber-100/50 scale-[1.01]";
+        } else {
+          goEl.className = "bg-white rounded-2xl border border-slate-150 p-4.5 space-y-4 shadow-sm select-none transition-all duration-300";
+        }
+      }
+    }
+
+    function renderCards() {
+      const activeData = dataset[activeIndex];
+      const deck = document.getElementById('snapshot-card-deck');
+      deck.innerHTML = '';
+
+      metrics.forEach(metric => {
+        const isSelected = metric.key === selectedMetric;
+        const valStr = formatValue(activeData[metric.key], metric.key);
+
+        const card = document.createElement('div');
+        card.id = `snap-card-${metric.key}`;
+        card.className = `flex-shrink-0 w-[145px] p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none ${
+          isSelected 
+            ? 'border-yellow-500 bg-amber-50/75 shadow-sm transform -translate-y-0.5' 
+            : 'border-slate-200 bg-white hover:border-slate-300'
+        }`;
+        
+        card.onclick = () => {
+          selectedMetric = metric.key;
+          updateUI();
+          
+          // Smoothly scroll the selected card into the exact center of viewport
+          setTimeout(() => {
+            card.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'center'
+            });
+
+            // Smoothly scroll to the corresponding widget
+            const targetEl = document.getElementById(`widget-${metric.key}`);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              const trendEl = document.getElementById('nh-investor-segment');
+              if (trendEl) {
+                trendEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          }, 100);
+        };
+
+        card.innerHTML = `
+          <div class="text-[11px] text-slate-400 font-medium mb-1.5 flex items-center justify-between">
+            <span>${metric.label}</span>
+            ${isSelected ? `<div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>` : ''}
+          </div>
+          <div class="text-base font-black text-slate-800 tracking-tight whitespace-nowrap">
+            ${valStr}
+          </div>
+          <div class="mt-1.5 text-[9px] text-slate-400 font-medium font-sans">
+            <span>클릭 시 시계열 연동</span>
+          </div>
+        `;
+        deck.appendChild(card);
+      });
+
+      // Smooth scroll the current selected element to make sure it's always initially centered
+      const activeCard = deck.querySelector('.border-yellow-500');
+      if (activeCard) {
+        activeCard.scrollIntoView({
+          behavior: 'auto', // immediate scroll on initial load
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+
+    function renderChart() {
+      const metricDef = metrics.find(m => m.key === selectedMetric);
+      chartTitle.innerText = `${metricDef.label} 추세선 (${selectedPeriod})`;
+
+      const filtered = getFilteredData();
+
+      if (selectedPeriod === '1D') {
+        chartViewport.innerHTML = `
+          <div class="flex flex-col items-center justify-center text-center p-4">
+            <span class="text-[10px] font-black text-slate-700">1D 시계열 그래프 미지원</span>
+            <span class="text-[8px] text-slate-400 mt-1 leading-tight">1M 이상 기간 선택 시 추세선이 실시간 표출됩니다.</span>
+          </div>
+        `;
+        return;
+      }
+
+      // Draw SVG chart inside chartViewport
+      chartViewport.innerHTML = `<svg id="chart-svg" class="w-full h-full" viewBox="0 0 340 100" preserveAspectRatio="none"></svg>`;
+      const svg = document.getElementById('chart-svg');
+
+      // Set ranges date
+      chartRange.innerText = `20${filtered[0].date} ~ 20${filtered[filtered.length - 1].date}`;
+
+      // Extract values to scale
+      const vals = filtered.map(d => d[selectedMetric]);
+      const minVal = Math.min(...vals);
+      const maxVal = Math.max(...vals);
+      const range = maxVal - minVal || 1;
+
+      // Map coordinates to 340x100 viewport
+      const paddingX = 10;
+      const paddingY = 8;
+      const chartW = 340 - (paddingX * 2);
+      const chartH = 100 - (paddingY * 2);
+
+      const points = filtered.map((item, index) => {
+        const x = paddingX + (index / (filtered.length - 1)) * chartW;
+        // SVG Y is inverted (0 is top, 100 is bottom)
+        const normalizedY = (item[selectedMetric] - minVal) / range;
+        const y = paddingY + chartH - (normalizedY * chartH);
+        return { x, y };
+      });
+
+      // Build path data string
+      let pathD = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 1; i < points.length; i++) {
+        pathD += ` L ${points[i].x} ${points[i].y}`;
+      }
+
+      // Build fill path
+      const fillD = `${pathD} L ${points[points.length - 1].x} 92 L ${points[0].x} 92 Z`;
+
+      // Create grid lines
+      let gridHTML = `
+        <line x1="10" y1="20" x2="330" y2="20" stroke="#f1f5f9" stroke-width="1" />
+        <line x1="10" y1="50" x2="330" y2="50" stroke="#f1f5f9" stroke-width="1" />
+        <line x1="10" y1="80" x2="330" y2="80" stroke="#f1f5f9" stroke-width="1" />
+      `;
+
+      const pathColor = metricDef.color;
+
+      // Draw path and polygon
+      svg.innerHTML = `
+        ${gridHTML}
+        <!-- Linear Gradient fill under path -->
+        <defs>
+          <linearGradient id="svgGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${pathColor}" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="${pathColor}" stop-opacity="0.0" />
+          </linearGradient>
+        </defs>
+        <path d="${fillD}" fill="url(#svgGradient)" />
+        <path d="${pathD}" fill="none" stroke="${pathColor}" stroke-width="2" stroke-linecap="round" />
+        <!-- Pulse pointer on active ending point -->
+        <circle cx="${points[points.length - 1].x}" cy="${points[points.length - 1].y}" r="4" fill="${pathColor}" stroke="#fff" stroke-width="1.5" />
+        <circle cx="${points[points.length - 1].x}" cy="${points[points.length - 1].y}" r="8" fill="${pathColor}" fill-opacity="0.3" class="animate-ping" />
+      `;
+    }
+
+    // MTS Period Tab controllers
+    document.querySelectorAll('.btn-period').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const period = e.target.id.replace('p-', '');
+        selectedPeriod = period;
+
+        // Visual highlights update
+        document.querySelectorAll('.btn-period').forEach(b => {
+          b.className = 'btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all text-slate-400 hover:text-slate-600';
+        });
+
+        // set active visual
+        e.target.className = 'btn-period w-[26px] h-[26px] flex items-center justify-center text-[9px] font-black rounded-md transition-all bg-white border border-slate-200 shadow-2xs text-slate-900';
+        
+        updateUI();
+      });
+    });
+
+    // Setup Scrubber slider parameters and labels
+    if (scrubberInput) {
+      scrubberInput.max = dataset.length - 1;
+      scrubberInput.value = dataset.length - 1;
+    }
+    if (lbStart) lbStart.innerText = dataset[0].date;
+    if (lbEnd) lbEnd.innerText = dataset[dataset.length - 1].date;
+
+    // Interactive playback simulation engine
+    function togglePlayback() {
+      if (isPlaying) {
+        clearInterval(playInterval);
+        isPlaying = false;
+        playPauseBtn.innerHTML = '<span>▶ 재생</span>';
+        playPauseBtn.className = 'bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2 px-3 text-[10px] font-black transition-all flex items-center justify-center grow gap-1.5 shadow-xs';
+      } else {
+        if (activeIndex === dataset.length - 1) {
+          activeIndex = 0; // wrap-around if finished
+        }
+        isPlaying = true;
+        playPauseBtn.innerHTML = '<span>❚❚ 일시정지</span>';
+        playPauseBtn.className = 'bg-amber-600 hover:bg-amber-700 text-white rounded-xl py-2 px-3 text-[10px] font-black transition-all flex items-center justify-center grow gap-1.5 shadow-xs';
+        
+        playInterval = setInterval(() => {
+          if (activeIndex < dataset.length - 1) {
+            activeIndex++;
+            updateUI();
+          } else {
+            togglePlayback(); // pause at end automatically
+          }
+        }, playSpeed);
+      }
+    }
+
+    // Attach controllers event listeners for seamless experience
+    if (playPauseBtn) {
+      playPauseBtn.addEventListener('click', togglePlayback);
+    }
+    
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (isPlaying) togglePlayback();
+        activeIndex = 0;
+        updateUI();
+      });
+    }
+
+    if (playSpeedSelect) {
+      playSpeedSelect.addEventListener('change', (e) => {
+        playSpeed = parseInt(e.target.value);
+        if (isPlaying) {
+          // Restart with new intervals sequence speed
+          togglePlayback();
+          togglePlayback();
+        }
+      });
+    }
+
+    // Tab toggles for Watch count widget
+    const toggleWatchViews = document.getElementById('toggle-watch-views');
+    const toggleWatchList = document.getElementById('toggle-watch-list');
+    
+    if (toggleWatchViews) {
+      toggleWatchViews.addEventListener('click', () => {
+        activeWatchTab = 'views';
+        toggleWatchViews.className = "flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-[#12141a] border-[#12141a] text-white shadow-3xs";
+        toggleWatchList.className = "flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-white border-slate-200 text-slate-400 hover:bg-slate-50";
+        updateWatchMetrics();
+      });
+    }
+
+    if (toggleWatchList) {
+      toggleWatchList.addEventListener('click', () => {
+        activeWatchTab = 'watchlist';
+        toggleWatchViews.className = "flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-white border-slate-200 text-slate-400 hover:bg-slate-50";
+        toggleWatchList.className = "flex-1 py-1.5 px-3 rounded-full text-xs font-black border transition-all bg-[#12141a] border-[#12141a] text-white shadow-3xs";
+        updateWatchMetrics();
+      });
+    }
+
+    // Tab toggles for Who bought and sold widget
+    const toggleTradeBuy = document.getElementById('toggle-trade-buy');
+    const toggleTradeSell = document.getElementById('toggle-trade-sell');
+    const toggleTradeNet = document.getElementById('toggle-trade-net');
+
+    function refreshTradeTabStyles() {
+      if (activeTradeTab === 'buy') {
+        toggleTradeBuy.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-slate-900 border-slate-900 text-white shadow-3xs";
+        toggleTradeSell.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+        toggleTradeNet.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+      } else if (activeTradeTab === 'sell') {
+        toggleTradeBuy.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+        toggleTradeSell.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-slate-900 border-slate-900 text-white shadow-3xs";
+        toggleTradeNet.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+      } else {
+        toggleTradeBuy.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+        toggleTradeSell.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-white border-transparent text-slate-450 hover:text-slate-600";
+        toggleTradeNet.className = "flex-1 py-1.5 px-2 rounded-lg text-[10px] font-black border transition-all bg-slate-900 border-slate-900 text-white shadow-3xs";
+      }
+    }
+
+    if (toggleTradeBuy) {
+      toggleTradeBuy.addEventListener('click', () => {
+        activeTradeTab = 'buy';
+        refreshTradeTabStyles();
+        updateTradeMetrics();
+      });
+    }
+
+    if (toggleTradeSell) {
+      toggleTradeSell.addEventListener('click', () => {
+        activeTradeTab = 'sell';
+        refreshTradeTabStyles();
+        updateTradeMetrics();
+      });
+    }
+
+    if (toggleTradeNet) {
+      toggleTradeNet.addEventListener('click', () => {
+        activeTradeTab = 'net';
+        refreshTradeTabStyles();
+        updateTradeMetrics();
+      });
+    }
+
+    if (scrubberInput) {
+      scrubberInput.addEventListener('input', (e) => {
+        if (isPlaying) togglePlayback();
+        activeIndex = parseInt(e.target.value);
+        updateUI();
+      });
+    }
+
+    // === Sector Comparison Modal Logic ===
+    function getSectorStocksData() {
+      const activeData = dataset[activeIndex];
+      const sPrice = activeData.stockPrice;
+      const avgPurchasePrice = activeData.avgPurchasePrice;
+      const lossRatio = activeData.lossInvestorRatio;
+
+      const p1 = Math.round((lossRatio * 0.45 + 5.2) * 10) / 10;
+      const p2 = Math.round((lossRatio * 0.25 + 13.8) * 10) / 10;
+      const p3 = Math.round((70.5 - lossRatio * 0.5) * 10) / 10;
+      const p4 = parseFloat((100 - p1 - p2 - p3).toFixed(1));
+
+      return [
+        {
+          id: 'skhynix',
+          name: 'SK하이닉스',
+          price: Math.round((sPrice * 2.3) / 10) * 10,
+          avgPrice: Math.round((sPrice * 2.5) / 10) * 10,
+          positionName: '최상위 가격대 (상위 10%)',
+          level: 'head',
+          yOffset: '6%',
+          badgeColor: 'bg-rose-50 border border-rose-150 text-rose-700',
+          textColor: 'text-rose-600',
+          dotColor: 'bg-rose-500',
+          statusText: '현재 주가가 이 섹터 내에서 가장 높은 상위 10% 가격 권역에 머무르고 있습니다.',
+          segments: [38.2, 28.5, 20.3, 13.0]
+        },
+        {
+          id: 'hanmi',
+          name: '한미반도체',
+          price: Math.round((sPrice * 1.5) / 10) * 10,
+          avgPrice: Math.round((sPrice * 1.6) / 10) * 10,
+          positionName: '최상위 가격대 (상위 10%)',
+          level: 'head',
+          yOffset: '6%',
+          badgeColor: 'bg-rose-50 border border-rose-150 text-rose-700',
+          textColor: 'text-rose-600',
+          dotColor: 'bg-rose-500',
+          statusText: '분포상 최고가 수준에 해당하는 상위 10% 가격대에 위치하고 있습니다.',
+          segments: [45.1, 23.5, 18.2, 13.2]
+        },
+        {
+          id: 'samsung',
+          name: '삼성전자',
+          price: sPrice,
+          avgPrice: avgPurchasePrice,
+          positionName: '상위 가격대 (상위 30%)',
+          level: 'shoulder',
+          yOffset: '12%',
+          badgeColor: 'bg-amber-50 border border-amber-150 text-amber-700',
+          textColor: 'text-amber-600',
+          dotColor: 'bg-amber-500',
+          statusText: '현재 종가가 다수 주주의 평균 구매 가격이 밀집되어 있는 상위 30% 영역 부근에 위치해 있습니다.',
+          segments: [p1, p2, p3, p4]
+        },
+        {
+          id: 'leeno',
+          name: '리노공업',
+          price: Math.round((sPrice * 3.2) / 10) * 10,
+          avgPrice: Math.round((sPrice * 3.1) / 10) * 10,
+          positionName: '상위 가격대 (상위 30%)',
+          level: 'shoulder',
+          yOffset: '12%',
+          badgeColor: 'bg-amber-50 border border-amber-150 text-amber-700',
+          textColor: 'text-amber-600',
+          dotColor: 'bg-amber-500',
+          statusText: '평균 가격 분포선보다 다소 높은 상위 30% 영역 부근에서 가격을 형성하고 있습니다.',
+          segments: [12.5, 50.2, 25.1, 12.2]
+        },
+        {
+          id: 'eotechnics',
+          name: '이오테크닉스',
+          price: Math.round((sPrice * 2.1) / 10) * 10,
+          avgPrice: Math.round((sPrice * 2.25) / 10) * 10,
+          positionName: '중간 가격대 (중위 50%)',
+          level: 'waist',
+          yOffset: '32%',
+          badgeColor: 'bg-indigo-50 border border-indigo-150 text-indigo-700',
+          textColor: 'text-indigo-600',
+          dotColor: 'bg-indigo-500',
+          statusText: '주주들의 평균 단가 중심이자 전체 가격대 중 중앙에 속하는 50% 가격 권역에 포진해 있습니다.',
+          segments: [18.5, 35.2, 36.1, 10.2]
+        },
+        {
+          id: 'isc',
+          name: 'ISC',
+          price: Math.round((sPrice * 0.95) / 10) * 10,
+          avgPrice: Math.round((sPrice * 1.05) / 10) * 10,
+          positionName: '중간 가격대 (중위 50%)',
+          level: 'waist',
+          yOffset: '32%',
+          badgeColor: 'bg-indigo-50 border border-indigo-150 text-indigo-700',
+          textColor: 'text-indigo-600',
+          dotColor: 'bg-indigo-500',
+          statusText: '전체 종가 분포 및 주주 평단가의 가중치 부근인 50% 수준의 가격 영역에 머물러 있습니다.',
+          segments: [14.2, 42.1, 30.5, 13.2]
+        },
+        {
+          id: 'dbhitek',
+          name: 'DB하이텍',
+          price: Math.round((sPrice * 0.72) / 10) * 10,
+          avgPrice: Math.round((sPrice * 0.82) / 10) * 10,
+          positionName: '낮은 가격대 (하위 30%)',
+          level: 'knee',
+          yOffset: '60%',
+          badgeColor: 'bg-violet-50 border border-[#bfa5f6] text-violet-700',
+          textColor: 'text-violet-600',
+          dotColor: 'bg-violet-500',
+          statusText: '최근 평균 단가 변화에 딸 가격 분포의 하위 30% 수준에 속하는 주가 영역에 머무르고 있습니다.',
+          segments: [8.2, 14.5, 48.3, 29.0]
+        },
+        {
+          id: 'jusung',
+          name: '주성엔지니어링',
+          price: Math.round((sPrice * 0.42) / 10) * 10,
+          avgPrice: Math.round((sPrice * 0.48) / 10) * 10,
+          positionName: '낮은 가격대 (하위 30%)',
+          level: 'knee',
+          yOffset: '60%',
+          badgeColor: 'bg-violet-50 border border-[#bfa5f6] text-violet-700',
+          textColor: 'text-violet-600',
+          dotColor: 'bg-violet-500',
+          statusText: '주가 조정 흐름에 따라 전체 분포 범위의 아래 구간인 하위 30% 영역 수준에 매물이 분포하고 있습니다.',
+          segments: [9.5, 16.2, 51.1, 23.2]
+        },
+        {
+          id: 'wonikips',
+          name: '원익IPS',
+          price: Math.round((sPrice * 0.38) / 10) * 10,
+          avgPrice: Math.round((sPrice * 0.48) / 10) * 10,
+          positionName: '최하단 가격대 (하위 10%)',
+          level: 'foot',
+          yOffset: '84%',
+          badgeColor: 'bg-slate-100 border border-slate-200 text-slate-700',
+          textColor: 'text-slate-600',
+          dotColor: 'bg-slate-600',
+          statusText: '해당 섹터 종목 분포 범위 내에서 가장 낮게 보수적으로 잡히는 하위 10% 가격 영역에 봉착해 있습니다.',
+          segments: [4.1, 10.2, 30.5, 55.2]
+        },
+        {
+          id: 'hanamicron',
+          name: '하나마이크론',
+          price: Math.round((sPrice * 0.22) / 10) * 10,
+          avgPrice: Math.round((sPrice * 0.29) / 10) * 10,
+          positionName: '최하단 가격대 (하위 10%)',
+          level: 'foot',
+          yOffset: '84%',
+          badgeColor: 'bg-slate-100 border border-slate-200 text-slate-700',
+          textColor: 'text-slate-600',
+          dotColor: 'bg-slate-600',
+          statusText: '기록된 단가 수준 중 최저 하위 한계점에 상응하는 하위 10% 가격 범위에 종가가 포진되어 수급을 형성하고 있습니다.',
+          segments: [5.2, 12.1, 33.5, 49.2]
+        }
+      ];
+    }
+
+    function openSectorComparisonModal() {
+      isSectorModalOpen = true;
+      const modal = document.getElementById('sector-compare-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+      updateSectorComparisonModal();
+    }
+
+    function closeSectorComparisonModal() {
+      isSectorModalOpen = false;
+      const modal = document.getElementById('sector-compare-modal');
+      if (modal) {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+      }
+    }
+
+    function selectSectorStock(id) {
+      activeSectorStockId = id;
+      updateSectorComparisonModal();
+    }
+
+    function updateSectorComparisonModal() {
+      const activeData = dataset[activeIndex];
+      const refDateEl = document.getElementById('modal-ref-date');
+      if (refDateEl) refDateEl.innerText = activeData.date;
+
+      const stocks = getSectorStocksData();
+      const selected = stocks.find(st => st.id === activeSectorStockId) || stocks[1];
+
+      // 1. Render Left body map pins
+      const pinContainer = document.getElementById('modal-body-pins');
+      if (pinContainer) {
+        pinContainer.innerHTML = '';
+        const zonesConfig = [
+          { 
+            id: 'zone-1', 
+            bgClass: 'bg-rose-500/10 hover:bg-rose-500/15 border-b border-rose-300/30',
+            levels: ['head']
+          },
+          { 
+            id: 'zone-2', 
+            bgClass: 'bg-amber-500/10 hover:bg-amber-500/15 border-b border-amber-300/30',
+            levels: ['shoulder']
+          },
+          { 
+            id: 'zone-3', 
+            bgClass: 'bg-emerald-500/10 hover:bg-emerald-500/15 border-b border-emerald-300/30',
+            levels: ['waist']
+          },
+          { 
+            id: 'zone-4', 
+            bgClass: 'bg-violet-500/10 hover:bg-violet-500/15',
+            levels: ['knee', 'foot']
+          }
+        ];
+
+        zonesConfig.forEach(zone => {
+          const zoneStocks = stocks.filter(st => zone.levels.includes(st.level));
+          let stockPillsHTML = '';
+          
+          zoneStocks.forEach(st => {
+            const isSelected = st.id === activeSectorStockId;
+            const btnClass = isSelected
+              ? 'bg-indigo-600 text-white font-black scale-102 border border-indigo-600 z-40'
+              : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 hover:border-slate-300';
+            const dotBgClass = isSelected ? 'bg-white' : st.dotColor;
+
+            stockPillsHTML += `
+              <button
+                onclick="selectSectorStock('${st.id}')"
+                class="px-2 py-0.5 text-[9.5px] leading-tight font-extrabold rounded-full transition-all flex items-center gap-1 shadow-3xs cursor-pointer ${btnClass}"
+              >
+                <span class="w-1.5 h-1.5 rounded-full ${dotBgClass}"></span>
+                <span>${st.name}</span>
+              </button>
+            `;
+          });
+
+          const zoneHTML = `
+            <div 
+              class="w-full h-[25%] relative flex items-center justify-center px-4 transition-colors duration-200 z-35 ${zone.bgClass}"
+            >
+              <div class="flex flex-wrap gap-1.5 items-center justify-center pointer-events-auto max-w-[280px]">
+                ${stockPillsHTML}
+              </div>
+            </div>
+          `;
+          pinContainer.insertAdjacentHTML('beforeend', zoneHTML);
+        });
+      }
+
+      // 2. Render Selection Grid
+      const gridContainer = document.getElementById('modal-stock-grid');
+      if (gridContainer) {
+        gridContainer.innerHTML = '';
+        stocks.forEach(st => {
+          const isSelected = st.id === activeSectorStockId;
+          const selClass = isSelected
+            ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950 font-black shadow-3xs scale-102'
+            : 'border-slate-200 hover:border-slate-350 text-slate-700 bg-white hover:bg-slate-50/20';
+          
+          const btnHTML = `
+            <button
+              onclick="selectSectorStock('${st.id}')"
+              class="p-2 rounded-xl border flex flex-col items-center justify-center text-center transition-all ${selClass}"
+            >
+              <span class="text-[10px] leading-tight block truncate w-full">${st.name}</span>
+              <span class="text-[9px] font-mono leading-none block text-slate-500 mt-1 font-bold">${st.price.toLocaleString()}</span>
+            </button>
+          `;
+          gridContainer.insertAdjacentHTML('beforeend', btnHTML);
+        });
+      }
+
+      // 3. Render Detail Card
+      const cardContainer = document.getElementById('modal-stock-card-details');
+      if (cardContainer) {
+        cardContainer.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-200/60 pb-2">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-black text-slate-800">${selected.name}</span>
+                <span class="text-[9px] text-slate-400 font-mono">Closing Price</span>
+              </div>
+              <span class="text-[9.5px] font-black font-sans px-2 py-0.5 rounded-full ${selected.badgeColor}">
+                ${selected.positionName}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 pt-2.5">
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 text-center">
+                <span class="text-[8.5px] text-slate-400 block font-semibold mb-0.5">기준 가치 (현재 종가)</span>
+                <span class="text-xs font-black text-rose-600 font-mono">${selected.price.toLocaleString()}원</span>
+              </div>
+              <div class="bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 text-center">
+                <span class="text-[8.5px] text-slate-400 block font-semibold mb-0.5">투자자 평균 매입가</span>
+                <span class="text-xs font-black text-slate-700 font-mono">${selected.avgPrice.toLocaleString()}원</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-3 text-[10.5px] leading-relaxed text-slate-600 shadow-3xs font-normal">
+            <strong>물타기 / 수급 해석:</strong> ${selected.statusText}
+          </div>
+        `;
+      }
+    }
+
+    window.openSectorComparisonModal = openSectorComparisonModal;
+    window.closeSectorComparisonModal = closeSectorComparisonModal;
+    window.selectSectorStock = selectSectorStock;
+
+    // Start
+    updateUI();
+  </script>
+</body>
+</html>
